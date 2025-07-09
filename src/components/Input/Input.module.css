@@ -1,0 +1,19 @@
+.inputContainer{
+    background-color: #F5F5F5;
+    border-radius: 5x;
+    width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.input{
+    width: 300px;
+    height: 30px;
+    border: 0px;
+    background-color: #F5F5F5;
+    border-style: none;
+}
