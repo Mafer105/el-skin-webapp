@@ -1,15 +1,17 @@
-.container{
-    width: 80%;
-    margin: 0 auto;
-}
-h3{
-    text-align: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
+.container {
+  width: 80%;
+  margin: 0 auto;
 }
 
-.products{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px; 
+h3 {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 100px;
+  justify-self: center;
 }

@@ -1,14 +1,14 @@
 import './App.css';
-import Header from './components/Header';
 import Carousel from './components/Carousel';
 import Products from './components/Products';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <>
-      <Header/>
       <Carousel/>
       <Products/>
+      <Outlet /> 
     </>
     
   );
