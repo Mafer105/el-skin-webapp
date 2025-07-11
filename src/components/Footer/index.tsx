@@ -5,18 +5,22 @@ import Column from './Column';
 const footerData = [
   {
     title: 'Sobre a AL SKIN',
+    path: '/sobre',
     links: ['- quem somos', '- time AL SKIN', '- carreiras'],
   },
   {
     title: 'Loja AL SKIN',
+    path: null,
     links: ['- lojas físicas', '- devolução'],
   },
   {
     title: 'Atendimento',
+    path: null,
     links: ['- oi@aiskin.com.br', '- ajuda'],
   },
   {
     title: 'Blog AL SKIN',
+    path: null,
     links: ['- Minha pele', '- Ingredientes'],
   },
 ];
@@ -33,6 +37,7 @@ export default function Footer() {
             key={column.title}
             title={column.title}
             links={column.links}
+            path={column.path}
           />
         ))}
       </div>
