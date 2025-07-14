@@ -1,21 +1,57 @@
-import product from '../../assets/product.png';
 import styles from './Product.module.css';
-export default function Product() {
-  return (
-    <div className={styles.container}>
-      <img src={product} className={styles.img} />
-      <p className={styles.name}><strong>Protetor solar AL SUN</strong></p>
-      <p className={styles.description}>alta proteção e pele luminosa sem grude nem pele cinzenta</p>
-      <div className={styles.buttons}>
-        <button className={styles.btnVerde}>proteção</button>
-        <button className={styles.btnRosa}>rosto</button>
-      </div>
 
-      <div className={styles.buttons}>
-        <h2>79,90</h2>
-        <button className={styles.btnRoxo}>Comprar</button>
-      </div>
-
-    </div>
-  );
+export interface IProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  tags: Array<{
+    label: string;
+    type: 'protection' | 'face';
+  }>;
 }
+
+interface ProductCardProps {
+  product: IProduct;
+  onProductClick: (productId: string) => void;
+  onBuyClick: (productId: string, event: React.MouseEvent) => void;
+}
+
+const Product: React.FC<ProductCardProps> = ({
+  product,
+  onProductClick,
+  onBuyClick
+}) => {
+  const formatPrice = (price: number): string => {
+    return `R$ ${price.toFixed(2).replace('.', ',')}`;
+  };
+
+  return (
+    <a className={styles.container} onClick={() => onProductClick(product.id)}>
+      <img src={product.image} className={styles.img} alt='imagem do produto' />
+      <p className={styles.name}><strong>{product.name}</strong></p>
+      <p className={styles.description}>{product.description}</p>
+      <div className={styles.buttons}>
+        {product.tags.map((tag) => (
+          <span
+            key={`${product.id}-${tag.label}-${tag.type}`}
+            className={`${styles['product-tag']} ${styles['product-tag--' + tag.type]}`}
+          >
+            {tag.label}
+          </span>
+        ))}
+      </div>
+
+      <div className={styles.buttons}>
+        <h2 style={{fontSize:'20px'}}>{formatPrice(product.price)}</h2>
+        <button className={styles.btnRoxo} onClick={(e) => onBuyClick(product.id, e)} type="button">
+          Comprar
+        </button>
+      </div>
+
+    </a>
+  );
+};
+
+export default Product;

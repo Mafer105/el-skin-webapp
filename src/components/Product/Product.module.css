@@ -51,4 +51,23 @@
     border: 0px;
     border-radius: 8px;
     align-self: center;
+    cursor: pointer;
+}
+.product-tag {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-tag--protection {
+  background-color: #E3F2FD;
+  color: #1976D2;
+}
+
+.product-tag--face {
+  background-color: #FCE4EC;
+  color: #C2185B;
 }
