@@ -1,39 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Carousel.module.css';
-import image1 from '../../assets/carousel/image1.png';
-import image2 from '../../assets/carousel/image2.png';
-import image3 from '../../assets/carousel/image3.png';
-
+import axios from 'axios';
 interface Slide {
-  image: string;
+  id: string,
+  subtitle: string;
   title: string;
   description: string;
-  buttonText: string;
+  backgroundImage: string;
 }
-
-const slides: Slide[] = [
-  {
-    image: image2,
-    title: 'Confira nossa linha Corporal',
-    description: 'com benefícios além da hidratação',
-    buttonText: 'Comprar Agora',
-  },
-  {
-    image: image1,
-    title: 'Toda a linha anti-age',
-    description: 'Com 15% off',
-    buttonText: 'Comprar agora',
-  },
-  {
-    image: image3,
-    title: 'Kits incríveis',
-    description: 'Até 50% off',
-    buttonText: 'Comprar agora',
-  },
-];
 
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slides, setSlides] = useState<Slide[]>([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/carousel')
+      .then((response) => {
+        setSlides(response.data);
+        console.log('Slides recebidos:', response.data);
+      })
+      .catch(error => {
+        console.log('Erro ao buscar os slides:', error);
+      });
+  }, []);
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -47,8 +36,12 @@ export default function Carousel() {
     setCurrentIndex(newIndex);
   };
 
+  if (slides.length === 0) {
+    return <div>Carregando...</div>;
+  }
+
   return (
-    <div className={styles.container} style={{ backgroundImage: `url(${slides[currentIndex].image})` }} >
+    <div className={styles.container} style={{ backgroundImage: `url(${slides[currentIndex].backgroundImage})` }} >
 
       <button onClick={goToPrevious} className={styles.btn}>
         &#10094;
@@ -56,7 +49,7 @@ export default function Carousel() {
 
       <div className={styles.content}>
         <h1 className={styles.title}>{slides[currentIndex].title}</h1>
-        <p className={styles.subtitle}>{slides[currentIndex].description}</p>
+        <p className={styles.subtitle}>{slides[currentIndex].subtitle}</p>
         <button className={styles.btnComprar}>
           Comprar Agora &#10095;
         </button>

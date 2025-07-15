@@ -8,7 +8,7 @@ export interface IProduct {
   image: string;
   tags: Array<{
     label: string;
-    type: 'protection' | 'face';
+    type: string
   }>;
 }
 
@@ -44,7 +44,7 @@ const Product: React.FC<ProductCardProps> = ({
       </div>
 
       <div className={styles.buttons}>
-        <h2 style={{fontSize:'20px'}}>{formatPrice(product.price)}</h2>
+        <h2 style={{ fontSize: '20px' }}>{formatPrice(product.price)}</h2>
         <button className={styles.btnRoxo} onClick={(e) => onBuyClick(product.id, e)} type="button">
           Comprar
         </button>
