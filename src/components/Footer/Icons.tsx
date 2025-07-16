@@ -2,7 +2,6 @@ import { FaInstagramSquare, FaFacebookSquare, FaYoutube, FaPinterest, FaTwitterS
 import { IconType } from 'react-icons';
 import styles from './Footer.module.css';
 
-// Definimos uma lista com os componentes dos ícones
 const socialMediaIcons: IconType[] = [
   FaInstagramSquare,
   FaFacebookSquare,
@@ -18,10 +17,10 @@ export default function SocialIcons() {
     <div className={styles.icons}>
       {socialMediaIcons.map((IconComponent, index) => (
         <IconComponent
-          key={index} // Usar o índice como chave é seguro aqui, pois a lista é estática
+          key={index}
           size={32}
           color="#6F6E6E"
-          className={styles.socialIcon} // Usaremos uma classe para o espaçamento
+          className={styles.socialIcon} 
         />
       ))}
     </div>

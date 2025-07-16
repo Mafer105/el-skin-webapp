@@ -1,16 +1,9 @@
 import './App.css';
-import Carousel from './components/Carousel';
-import Products from './components/Products';
-import { Outlet } from 'react-router-dom';
+import AppRouter from './routes';
 
 function App() {
   return (
-    <>
-      <Carousel/>
-      <Products/>
-      <Outlet /> 
-    </>
-    
+    <AppRouter/>
   );
 }
 
