@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Carousel.module.css';
-import axios from 'axios';
-interface Slide {
+import { carouselService } from '../../service/carouselService';
+export interface Slide {
   id: string,
   subtitle: string;
   title: string;
@@ -14,14 +14,11 @@ export default function Carousel() {
   const [slides, setSlides] = useState<Slide[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/carousel')
-      .then((response) => {
-        setSlides(response.data);
-        console.log('Slides recebidos:', response.data);
-      })
-      .catch(error => {
-        console.log('Erro ao buscar os slides:', error);
-      });
+    async function fetchItems() {
+      const newItems = await carouselService.getCarouselItems();
+      setSlides(newItems);
+    }
+    fetchItems();
   }, []);
 
   const goToPrevious = () => {

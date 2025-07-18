@@ -1,17 +1,26 @@
-import { useState } from 'react';
 import styles from './Input.module.css';
 import { IoIosSearch } from 'react-icons/io';
+import { SearchContext } from '../../context/SearchContext';
+import React, { useContext } from 'react';
 
 export default function Input() {
-  const [textoBusca, setTextoBusca] = useState('');
+  const { search, setSearch } = useContext(SearchContext);
 
-  function handleOnCange(e: React.ChangeEvent<HTMLInputElement>){
-    setTextoBusca(e.target.value);
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(e.target.value);
   }
+
+  function onClickSearch(): void {
+    console.log(`Você pesquisou por: ${search}`);
+  }
+
   return (
     <div className={styles.inputContainer}>
-      <input type='text' className={styles.input} placeholder="O que você está procurando?" color='#ccc' onChange={handleOnCange} />
-      <IoIosSearch size={24} color='#7a7878' />
+      <input type='text' className={styles.input} placeholder="O que você está procurando?" color='#ccc' onChange={handleOnChange} />
+      <button className={styles.SearchBtn} onClick={onClickSearch}>
+        <IoIosSearch size={24} color='#1a1a1aff' />
+      </button>
+      
     </div>
   );
 }

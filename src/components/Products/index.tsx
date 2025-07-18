@@ -1,20 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useContext,useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
 import styles from './Products.module.css';
-import axios from 'axios';
+import { productService } from '../../service/productService';
+import { SearchContext } from '../../context/SearchContext';
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
+  
+  const { search } = useContext(SearchContext);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/products')
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
+    const fetchProducts = async () => {
+      const response = await productService.getProducts();
+      setProducts(response);
+    };
+    fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (search) {
+      setFilteredProducts(products.filter(product =>
+        product.name.toLowerCase().includes(search.toLowerCase()) ||
+        product.description.toLowerCase().includes(search.toLowerCase())
+      ));
+    } else {
+      setFilteredProducts([...products]);
+    }
+  }, [search, products]);
 
   const handleProductClick = (productId: string) => {
     console.log(`Produto clicado: ${productId}`);
@@ -29,7 +42,7 @@ export default function Products() {
     <section className={styles.container}>
       <h3>nossos queridinhos estão aqui</h3>
       <section className={styles.products}>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Product
             key={product.id}
             product={product}
