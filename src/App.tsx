@@ -1,17 +1,15 @@
 import './App.css';
 import AppRouter from './routes';
-import { SearchContext } from './context/SearchContext';
-import { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+import { SearchProvider } from './context/SearchContext';
 
 function App() {
-  const [search, setSearch] = useState('');
   return (
-    <Router> 
-      <SearchContext.Provider value={{ search, setSearch }}>
+    <CartProvider>
+      <SearchProvider>
         <AppRouter />
-      </SearchContext.Provider>
-    </Router>
+      </SearchProvider>
+    </CartProvider>
   );
 }
 

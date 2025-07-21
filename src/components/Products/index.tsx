@@ -1,14 +1,14 @@
-import { useContext,useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
 import styles from './Products.module.css';
 import { productService } from '../../service/productService';
-import { SearchContext } from '../../context/SearchContext';
+import { useSearchContext } from '../../context/SearchContext';
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   
-  const { search } = useContext(SearchContext);
+  const { search } = useSearchContext();
 
   useEffect(() => {
     const fetchProducts = async () => {

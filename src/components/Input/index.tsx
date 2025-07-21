@@ -1,10 +1,10 @@
 import styles from './Input.module.css';
 import { IoIosSearch } from 'react-icons/io';
-import { SearchContext } from '../../context/SearchContext';
-import React, { useContext } from 'react';
+import { useSearchContext } from '../../context/SearchContext';
+import React from 'react';
 
 export default function Input() {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useSearchContext();
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
