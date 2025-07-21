@@ -44,7 +44,6 @@ export default function Header() {
       <CartModal
         isOpen={isCartModalOpen}
         onClose={handleCloseCart}
-        items={items}
       />
     </div>
 

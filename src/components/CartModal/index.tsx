@@ -1,15 +1,25 @@
 import { FaMinus, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
-import React from 'react';
-import { CartItem } from '../../context/CartContext';
+import React, { useMemo } from 'react';
+import { CartItem, useCartContext } from '../../context/CartContext';
 import styles from './CartModal.module.css';
 
 interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  items: CartItem[];
 }
 
-export default function CarModal({ isOpen, onClose, items }: Readonly<CartModalProps>) {
+export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) {
+  const { items, removerProduto, updateQuantidade } = useCartContext();
+
+  const cartTotal = useMemo(() => {
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return total;
+  }, [items]);
+
+  const formatPrice = (price: number): string => {
+    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -22,6 +32,21 @@ export default function CarModal({ isOpen, onClose, items }: Readonly<CartModalP
     if (e.key === 'Escape') {
       onClose();
     }
+  };
+
+  const remover = (item: CartItem) => {
+    if (item.quantity > 1) {
+      updateQuantidade(item.id, item.quantity - 1);
+    }
+    else deleteItem(item.id);
+  };
+
+  const adicionar = (item: CartItem) => {
+    updateQuantidade(item.id, item.quantity + 1);
+  };
+
+  const deleteItem = (itemId: string) => {
+    removerProduto(itemId);
   };
 
   return (
@@ -64,12 +89,14 @@ export default function CarModal({ isOpen, onClose, items }: Readonly<CartModalP
                         <div className={styles.quantity_controls}>
                           <button
                             className={styles.quantity_btn}
+                            onClick={() => remover(item)}
                           >
                             <FaMinus />
                           </button>
                           <span className={styles.quantity_display}>{item.quantity}</span>
                           <button
                             className={styles.quantity_btn}
+                            onClick={() => adicionar(item)}
                           >
                             <FaPlus />
                           </button>
@@ -78,6 +105,7 @@ export default function CarModal({ isOpen, onClose, items }: Readonly<CartModalP
                         <button
                           className={styles.remove_btn}
                           title="Remover item"
+                          onClick={() => deleteItem(item.id)}
                         >
                           <FaTrash />
                         </button>
@@ -93,7 +121,7 @@ export default function CarModal({ isOpen, onClose, items }: Readonly<CartModalP
 
               <div className={styles.cart_total}>
                 <span className={styles.total_label}>Total</span>
-                <span className={styles.total_price}>0</span>
+                <span className={styles.total_price}>{formatPrice(cartTotal)}</span>
               </div>
 
               <button

@@ -3,13 +3,15 @@ import Product, { IProduct } from '../Product';
 import styles from './Products.module.css';
 import { productService } from '../../service/productService';
 import { useSearchContext } from '../../context/SearchContext';
+import { useCartContext } from '../../context/CartContext';
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   
   const { search } = useSearchContext();
-
+  const { adicionarProduto } = useCartContext();
+  
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await productService.getProducts();
@@ -35,7 +37,11 @@ export default function Products() {
 
   const handleBuyClick = (productId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    console.log(`Comprar produto: ${productId}`);
+    const productToAdd = products.find(p => p.id === productId);
+    if (productToAdd) {
+      adicionarProduto(productToAdd);
+      alert(`${productToAdd.name} foi adicionado ao carrinho!`); 
+    }
   };
 
   return (
