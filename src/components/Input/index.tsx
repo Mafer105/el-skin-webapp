@@ -1,26 +1,31 @@
 import styles from './Input.module.css';
 import { IoIosSearch } from 'react-icons/io';
-import { useSearchContext } from '../../context/SearchContext';
 import React from 'react';
+interface InputProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string; 
+  onSearchClick?: () => void; 
+  'aria-label': string; 
+}
 
-export default function Input() {
-  const { search, setSearch } = useSearchContext();
-
-  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch(e.target.value);
-  }
-
-  function onClickSearch(): void {
-    console.log(`Você pesquisou por: ${search}`);
-  }
-
+export default function Input({ value, onChange, placeholder, onSearchClick, 'aria-label': ariaLabel }: Readonly<InputProps>) {
   return (
     <div className={styles.inputContainer}>
-      <input type='text' className={styles.input} placeholder="O que você está procurando?" color='#ccc' onChange={handleOnChange} />
-      <button className={styles.SearchBtn} onClick={onClickSearch}>
-        <IoIosSearch size={24} color='#1a1a1aff' />
-      </button>
-      
+      <input
+        type='text'
+        id="search-input"
+        className={styles.input}
+        placeholder={placeholder || "O que você está procurando?"} 
+        value={value}
+        onChange={onChange}
+        aria-label={ariaLabel}
+      />
+      {onSearchClick && (
+        <button className={styles.SearchBtn} onClick={onSearchClick} aria-label="Pesquisar">
+          <IoIosSearch size={24} color='#1a1a1aff' />
+        </button>
+      )}
     </div>
   );
 }

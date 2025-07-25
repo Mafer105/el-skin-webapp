@@ -3,13 +3,11 @@ import Input from '../Input';
 import { IoBagHandleOutline } from 'react-icons/io5';
 import Menu from '../Menu';
 import { useSearchContext } from '../../context/SearchContext';
-import { useCartContext } from '../../context/CartContext';
 import { useState } from 'react';
 import CartModal from '../CartModal';
 
 export default function Header() {
   const { search, setSearch } = useSearchContext();
-  const { items } = useCartContext();
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const handleCloseCart = () => {
@@ -32,7 +30,12 @@ export default function Header() {
     <div className={styles.header}>
       <div className={styles.container}>
         <h1>AL SKIN</h1>
-        <Input />
+        <Input
+          value={search}
+          onChange={handleOnChange}
+          onSearchClick={onClickSearch}
+          aria-label='Campo de  busca de produtos'
+        />
         <div className={styles.header_actions}>
           <button className={styles.cart_button} onClick={handleOnClickCart}>
             <IoBagHandleOutline size={24} />
