@@ -12,6 +12,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "axios": "^1.11.0",
+    "jest": "^27.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
@@ -51,5 +52,10 @@
     "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-react": "^7.37.5",
     "prettier": "^3.6.2"
+  },
+  "jest":{
+    "moduleNameMapper": {
+      "axios": "axios/dist/axios.min.js"
+    }
   }
 }

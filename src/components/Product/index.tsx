@@ -28,7 +28,10 @@ const Product: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <a className={styles.container} onClick={() => onProductClick(product.id)}>
+    <a className={styles.container} onClick={(e) => {
+      e.preventDefault();
+      onProductClick(product.id);
+    }} href='#'>
       <img src={product.image} className={styles.img} alt='imagem do produto' />
       <p className={styles.name}><strong>{product.name}</strong></p>
       <p className={styles.description}>{product.description}</p>
@@ -45,7 +48,7 @@ const Product: React.FC<ProductCardProps> = ({
 
       <div className={styles.buttons}>
         <h2 style={{ fontSize: '20px' }}>{formatPrice(product.price)}</h2>
-        <button className={styles.btnRoxo} onClick={(e) => onBuyClick(product.id, e)} type="button">
+        <button className={styles.btnRoxo} onClick={(e) => {e.stopPropagation(); onBuyClick(product.id, e)}} type="button">
           Comprar
         </button>
       </div>

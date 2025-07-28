@@ -1,125 +1,86 @@
-import React, { createContext, ReactNode, useContext, useMemo, useReducer } from 'react';
-
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
+import { createContext, useContext, useReducer, ReactNode, Dispatch } from 'react';
+import { IProduct } from '../components/Product'; 
+interface CartState {
+  cart: IProduct[];
 }
 
-export interface CartContextType {
-  items: CartItem[];
-  adicionarProduto: (produto: Omit<CartItem, 'quantity'>) => void;
+type CartAction =
+  | { type: 'ADD_PRODUCT'; payload: IProduct }
+  | { type: 'REMOVE_PRODUCT'; payload: { productId: string } }
+  | { type: 'CLEAR_CART' };
+
+interface ICartContext {
+  cart: IProduct[];
+  adicionarProduto: (produto: IProduct) => void;
   removerProduto: (produtoId: string) => void;
-  updateQuantidade: (produtoId: string, quantidade: number) => void;
+  clearCart: () => void;
 }
 
-interface CartProviderProps {
-  children: ReactNode;
-}
-
-export const ADD_PRODUTO = 'ADD_PRODUTO';
-export const REMOVE_PRODUTO = 'REMOVE_PRODUTO';
-export const UPDATE_QUANTIDADE = 'UPDATE_QUANTIDADE';
-
-type AddAction = {
-  type: typeof ADD_PRODUTO;
-  payload: Omit<CartItem, 'quantity'>;
-};
-
-type RemoveAction = {
-  type: typeof REMOVE_PRODUTO;
-  payload: string;
-};
-
-type UpdateAction = {
-  type: typeof UPDATE_QUANTIDADE;
-  payload: { produtoId: string; quantidade: number };
-};
-
-type CartAction = AddAction | RemoveAction | UpdateAction;
-
-export const carrinhoReducer = (state: CartItem[], action: CartAction): CartItem[] => {
+export const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
-  case ADD_PRODUTO: {
-    const novoProduto = action.payload;
-    const produtoIndex = state.findIndex((item) => item.id === novoProduto.id);
-    if (produtoIndex === -1) {
-      return [...state, { ...novoProduto, quantity: 1 }];
-    } else {
-      return state.map((item, index) =>
-        index === produtoIndex
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
+    case 'ADD_PRODUCT': {
+      const existingProduct = state.cart.find(p => p.id === action.payload.id);
+      if (existingProduct) {
+        return state;
+      }
+      return {
+        ...state,
+        cart: [...state.cart, action.payload],
+      };
     }
-  }
-  case REMOVE_PRODUTO: {
-    const produtoIdParaRemover = action.payload;
-    return state.filter((item) => item.id !== produtoIdParaRemover);
-  }
-  case UPDATE_QUANTIDADE: {
-    const { produtoId, quantidade } = action.payload;
-    return state.map((item) =>
-      item.id === produtoId ? { ...item, quantity: quantidade } : item
-    );
-  }
-  default:
-    return state;
+    case 'REMOVE_PRODUCT': {
+      return {
+        ...state,
+        cart: state.cart.filter(product => product.id !== action.payload.productId),
+      };
+    }
+    case 'CLEAR_CART': {
+      return {
+        ...state,
+        cart: [],
+      };
+    }
+    default:
+      return state;
   }
 };
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<ICartContext | undefined>(undefined);
 
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [items, dispatch] = useReducer(carrinhoReducer, [
-    {
-      id: '1',
-      name: 'Produto 1',
-      price: 100,
-      quantity: 1,
-      image: '/assets/prod8.jpg'
-    },
-    {
-      id: '2',
-      name: 'Produto 2',
-      price: 200,
-      quantity: 2,
-      image: '/assets/prod1.jpg'
-    }
-  ]);
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const initialState: CartState = {
+    cart: [],
+  };
 
-  const adicionarProduto = (produto: Omit<CartItem, 'quantity'>) => {
-    dispatch({ type: ADD_PRODUTO, payload: produto });
+  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const adicionarProduto = (produto: IProduct) => {
+    dispatch({ type: 'ADD_PRODUCT', payload: produto });
   };
 
   const removerProduto = (produtoId: string) => {
-    dispatch({ type: REMOVE_PRODUTO, payload: produtoId });
+    dispatch({ type: 'REMOVE_PRODUCT', payload: { productId: produtoId } });
+  };
+  
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
   };
 
-  const updateQuantidade = (produtoId: string, quantidade: number) => {
-    dispatch({ type: UPDATE_QUANTIDADE, payload: { produtoId, quantidade } });
-  };
-
-
-  const contextValue = useMemo(() => ({
-    items,
+  const value: ICartContext = {
+    cart: state.cart,
     adicionarProduto,
     removerProduto,
-    updateQuantidade
-  }), [items]);
+    clearCart,
+  };
 
-  return <CartContext.Provider value={contextValue}>
-    {children}
-  </CartContext.Provider>;
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
-
-export const useCartContext = (): CartContextType => {
+export const useCartContext = () => {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCartContext must be used within a CartProvider');
+
+  if (context === undefined) {
+    throw new Error('useCartContext deve ser usado dentro de um CartProvider');
   }
+
   return context;
 };
