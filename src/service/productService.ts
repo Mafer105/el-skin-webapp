@@ -9,7 +9,9 @@ export const productService = {
   },
 
   async getProductById(id: string): Promise<IProduct> {
-    const response = await api.get<IProduct>(`${API_CONFIG.ENDPOINTS.PRODUCTS}/${id}`);
+    const response = await api.get<IProduct>(
+      `${API_CONFIG.ENDPOINTS.PRODUCTS}/${id}`,
+    );
     return response.data;
   },
 };

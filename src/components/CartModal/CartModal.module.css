@@ -237,37 +237,37 @@
     width: 95%;
     max-height: 95vh;
   }
-  
+
   .cart_modal_header {
     padding: 15px;
   }
-  
+
   .cart_modal_header h2 {
     font-size: 1.5rem;
   }
-  
+
   .cart_modal_content {
     padding: 15px;
   }
-  
+
   .cart_item {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .cart_item_image {
     width: 60px;
     height: 60px;
   }
-  
+
   .cart_item_controls {
     justify-content: space-between;
   }
-  
+
   .quantity_controls {
     order: 1;
   }
-  
+
   .remove_btn {
     order: 2;
     margin-left: 0;

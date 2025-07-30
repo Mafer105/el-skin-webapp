@@ -1,4 +1,12 @@
-import { FaInstagramSquare, FaFacebookSquare, FaYoutube, FaPinterest, FaTwitterSquare, FaLinkedin, FaSpotify } from 'react-icons/fa';
+import {
+  FaInstagramSquare,
+  FaFacebookSquare,
+  FaYoutube,
+  FaPinterest,
+  FaTwitterSquare,
+  FaLinkedin,
+  FaSpotify,
+} from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import styles from './Footer.module.css';
 
@@ -20,7 +28,7 @@ export default function SocialIcons() {
           key={index}
           size={32}
           color="#6F6E6E"
-          className={styles.socialIcon} 
+          className={styles.socialIcon}
         />
       ))}
     </div>

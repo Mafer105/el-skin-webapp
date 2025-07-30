@@ -7,8 +7,22 @@ jest.mock('./api');
 const mockedApi = api as jest.Mocked<typeof api>;
 
 const mockProducts: IProduct[] = [
-  { id: '1', name: 'Produto 1', price: 100, description: 'Desc 1', image: '', tags: [] },
-  { id: '2', name: 'Produto 2', price: 200, description: 'Desc 2', image: '', tags: [] },
+  {
+    id: '1',
+    name: 'Produto 1',
+    price: 100,
+    description: 'Desc 1',
+    image: '',
+    tags: [],
+  },
+  {
+    id: '2',
+    name: 'Produto 2',
+    price: 200,
+    description: 'Desc 2',
+    image: '',
+    tags: [],
+  },
 ];
 
 const mockSingleProduct: IProduct = mockProducts[0];
@@ -36,7 +50,9 @@ describe('productService', () => {
       const product = await productService.getProductById(productId);
 
       expect(mockedApi.get).toHaveBeenCalledTimes(1);
-      expect(mockedApi.get).toHaveBeenCalledWith(`${API_CONFIG.ENDPOINTS.PRODUCTS}/${productId}`);
+      expect(mockedApi.get).toHaveBeenCalledWith(
+        `${API_CONFIG.ENDPOINTS.PRODUCTS}/${productId}`,
+      );
       expect(product).toEqual(mockSingleProduct);
     });
   });

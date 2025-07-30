@@ -1,5 +1,3 @@
-export default function First () {
-    return(
-        <></>
-    )
+export default function First() {
+  return <></>;
 }

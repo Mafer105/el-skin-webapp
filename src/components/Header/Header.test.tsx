@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from './index';
 import { SearchContext } from '../../context/SearchContext';
-import { CartContext } from '../../context/CartContext'; 
+import { CartContext } from '../../context/CartContext';
 
 jest.mock('../Input', () => {
   return function MockInput({ onSearchClick, ...rest }: any) {
@@ -10,20 +10,34 @@ jest.mock('../Input', () => {
   };
 });
 jest.mock('../Menu', () => () => <div data-testid="mock-menu">Menu</div>);
-jest.mock('../CartModal', () => ({ isOpen }: { isOpen: boolean }) => 
-  isOpen ? <div data-testid="mock-cart-modal">Seu Carrinho</div> : null
+jest.mock(
+  '../CartModal',
+  () =>
+    ({ isOpen }: { isOpen: boolean }) =>
+      isOpen ? <div data-testid="mock-cart-modal">Seu Carrinho</div> : null,
 );
 
 describe('Componente Header', () => {
   const mockSetSearch = jest.fn();
 
-  const renderComponent = (search: string) => {
+  const renderComponent = (search: string, totalItems = 0) => {
     return render(
-      <CartContext.Provider value={{ cart: [], adicionarProduto: jest.fn(), removerProduto: jest.fn(), clearCart: jest.fn() }}>
-        <SearchContext.Provider value={{ search: search, setSearch: mockSetSearch }}>
+      <CartContext.Provider
+        value={{
+          items: [],
+          totalItems: totalItems,
+          adicionarProduto: jest.fn(),
+          removerProduto: jest.fn(),
+          updateQuantidade: jest.fn(),
+          clearCart: jest.fn(),
+        }}
+      >
+        <SearchContext.Provider
+          value={{ search: search, setSearch: mockSetSearch }}
+        >
           <Header />
         </SearchContext.Provider>
-      </CartContext.Provider>
+      </CartContext.Provider>,
     );
   };
 
@@ -52,11 +66,16 @@ describe('Componente Header', () => {
     renderComponent('');
 
     expect(screen.queryByTestId('mock-cart-modal')).not.toBeInTheDocument();
-    
-    const cartButton = screen.getByRole('button'); 
+
+    const cartButton = screen.getByRole('button', { name: /carrinho/i });
     fireEvent.click(cartButton);
 
     expect(screen.getByTestId('mock-cart-modal')).toBeInTheDocument();
     expect(screen.getByText('Seu Carrinho')).toBeInTheDocument();
+  });
+
+  test('deve exibir o badge com a quantidade de itens', () => {
+    renderComponent('', 5);
+    expect(screen.getByText('5')).toBeInTheDocument();
   });
 });

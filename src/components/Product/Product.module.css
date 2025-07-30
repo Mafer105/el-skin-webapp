@@ -1,58 +1,58 @@
-.container{
-    width: 240px;
-    height: 400px;
-    margin-bottom: 100px;
-    cursor: pointer;
+.container {
+  width: 240px;
+  height: 400px;
+  margin-bottom: 100px;
+  cursor: pointer;
 }
 
-.img{
-    width: 240px;
-    height: 240px;
-    border-radius: 5px;
+.img {
+  width: 240px;
+  height: 240px;
+  border-radius: 5px;
 }
 
-.name{
-    font-size: 20px;
+.name {
+  font-size: 20px;
 }
 
-.description{
-    width: 220px;
-    font-size: 16px;
-    color: #878787;
+.description {
+  width: 220px;
+  font-size: 16px;
+  color: #878787;
 }
 
-.buttons{
-    display: flex;
-    gap: 20px;
+.buttons {
+  display: flex;
+  gap: 20px;
 }
 
-.btnVerde{
-    background-color: #5ED4DC;
-    height: 24px;
-    width: 91px;
-    color: white;
-    border: 0px;
-    border-radius: 8px;
+.btnVerde {
+  background-color: #5ed4dc;
+  height: 24px;
+  width: 91px;
+  color: white;
+  border: 0px;
+  border-radius: 8px;
 }
 
-.btnRosa{
-    background-color: #DC5EB1;
-    height: 24px;
-    width: 91px;
-    color: white;
-    border: 0px;
-    border-radius: 8px;
+.btnRosa {
+  background-color: #dc5eb1;
+  height: 24px;
+  width: 91px;
+  color: white;
+  border: 0px;
+  border-radius: 8px;
 }
 
-.btnRoxo{
-    background-color: #7045F5;
-    height: 40px;
-    width: 132px;
-    color: white;
-    border: 0px;
-    border-radius: 8px;
-    align-self: center;
-    cursor: pointer;
+.btnRoxo {
+  background-color: #7045f5;
+  height: 40px;
+  width: 132px;
+  color: white;
+  border: 0px;
+  border-radius: 8px;
+  align-self: center;
+  cursor: pointer;
 }
 .product-tag {
   padding: 4px 12px;
@@ -64,11 +64,11 @@
 }
 
 .product-tag--protection {
-  background-color: #E3F2FD;
-  color: #1976D2;
+  background-color: #e3f2fd;
+  color: #1976d2;
 }
 
 .product-tag--face {
-  background-color: #FCE4EC;
-  color: #C2185B;
+  background-color: #fce4ec;
+  color: #c2185b;
 }

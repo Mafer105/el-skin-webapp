@@ -15,7 +15,7 @@ api.interceptors.request.use(
   (error) => {
     console.error('[API] Erro na requisição:', error);
     return Promise.reject(new Error(error.message || 'Erro na requisição'));
-  }
+  },
 );
 
 api.interceptors.response.use(
@@ -24,8 +24,12 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('[API] Erro na resposta:', error.response?.status, error.message);
-    
+    console.error(
+      '[API] Erro na resposta:',
+      error.response?.status,
+      error.message,
+    );
+
     if (error.response?.status === 401) {
       console.error('Erro de autenticação');
     } else if (error.response?.status === 500) {
@@ -33,9 +37,11 @@ api.interceptors.response.use(
     } else {
       console.error('Erro desconhecido:', error.message);
     }
-    
-    return Promise.reject(new Error(error.message || 'Erro na resposta da API'));
-  }
+
+    return Promise.reject(
+      new Error(error.message || 'Erro na resposta da API'),
+    );
+  },
 );
 
 export default api;

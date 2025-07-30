@@ -8,16 +8,25 @@ interface CartModalProps {
   onClose: () => void;
 }
 
-export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) {
+export default function CarModal({
+  isOpen,
+  onClose,
+}: Readonly<CartModalProps>) {
   const { items, removerProduto, updateQuantidade } = useCartContext();
 
   const cartTotal = useMemo(() => {
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const total = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
     return total;
   }, [items]);
 
   const formatPrice = (price: number): string => {
-    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return price.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
   };
 
   if (!isOpen) return null;
@@ -37,8 +46,7 @@ export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) 
   const remover = (item: CartItem) => {
     if (item.quantity > 1) {
       updateQuantidade(item.id, item.quantity - 1);
-    }
-    else deleteItem(item.id);
+    } else deleteItem(item.id);
   };
 
   const adicionar = (item: CartItem) => {
@@ -85,7 +93,9 @@ export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) 
                       <h3 className={styles.cart_item_name}>{item.name}</h3>
 
                       <div className={styles.cart_item_controls}>
-                        <span className={styles.quantity_label}>Quantidade</span>
+                        <span className={styles.quantity_label}>
+                          Quantidade
+                        </span>
                         <div className={styles.quantity_controls}>
                           <button
                             className={styles.quantity_btn}
@@ -93,7 +103,9 @@ export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) 
                           >
                             <FaMinus />
                           </button>
-                          <span className={styles.quantity_display}>{item.quantity}</span>
+                          <span className={styles.quantity_display}>
+                            {item.quantity}
+                          </span>
                           <button
                             className={styles.quantity_btn}
                             onClick={() => adicionar(item)}
@@ -121,14 +133,12 @@ export default function CarModal({ isOpen, onClose }: Readonly<CartModalProps>) 
 
               <div className={styles.cart_total}>
                 <span className={styles.total_label}>Total</span>
-                <span className={styles.total_price}>{formatPrice(cartTotal)}</span>
+                <span className={styles.total_price}>
+                  {formatPrice(cartTotal)}
+                </span>
               </div>
 
-              <button
-                className={styles.finalize_btn}
-              >
-                Finalizar compra
-              </button>
+              <button className={styles.finalize_btn}>Finalizar compra</button>
             </>
           )}
         </div>

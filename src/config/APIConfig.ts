@@ -6,7 +6,7 @@ export const API_CONFIG = {
     CAROUSEL: '/carousel',
     PRODUCTS: '/products',
   },
-  
+
   DEFAULT_HEADERS: {
     'Content-Type': 'application/json',
   },

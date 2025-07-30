@@ -25,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "eslintConfig": {
     "extends": [
@@ -53,7 +54,7 @@
     "eslint-plugin-react": "^7.37.5",
     "prettier": "^3.6.2"
   },
-  "jest":{
+  "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/axios.min.js"
     }

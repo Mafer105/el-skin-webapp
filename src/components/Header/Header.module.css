@@ -1,16 +1,15 @@
-.container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 100px;
-    padding-right: 100px;
-    margin-left: 100px;
-    margin-right: 100px;
-
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
-.header{
-    border-bottom: 1px solid #ccc;
+.header {
+  border-bottom: 1px solid #ccc;
 }
 
 .header_actions {

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test ('true',() => {
+test('true', () => {
   expect(true).toBeTruthy();
 });
 // test('renders learn react link', () => {

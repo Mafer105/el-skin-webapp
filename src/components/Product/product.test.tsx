@@ -6,7 +6,7 @@ const mockProduct: IProduct = {
   id: '1',
   name: 'Sérum Hidratante',
   description: 'Um sérum para hidratação profunda.',
-  price: 89.90,
+  price: 89.9,
   image: 'image-url.jpg',
   tags: [{ label: 'Vegano', type: 'normal' }],
 };
@@ -26,14 +26,19 @@ describe('Componente Product', () => {
         product={mockProduct}
         onProductClick={mockOnProductClick}
         onBuyClick={mockOnBuyClick}
-      />
+      />,
     );
 
     expect(screen.getByText('Sérum Hidratante')).toBeInTheDocument();
-    expect(screen.getByText('Um sérum para hidratação profunda.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Um sérum para hidratação profunda.'),
+    ).toBeInTheDocument();
     expect(screen.getByText('R$ 89,90')).toBeInTheDocument();
     expect(screen.getByText('Vegano')).toBeInTheDocument();
-    expect(screen.getByAltText('imagem do produto')).toHaveAttribute('src', 'image-url.jpg');
+    expect(screen.getByAltText('imagem do produto')).toHaveAttribute(
+      'src',
+      'image-url.jpg',
+    );
   });
 
   test('deve chamar onProductClick quando o card do produto for clicado', () => {
@@ -42,7 +47,7 @@ describe('Componente Product', () => {
         product={mockProduct}
         onProductClick={mockOnProductClick}
         onBuyClick={mockOnBuyClick}
-      />
+      />,
     );
     fireEvent.click(screen.getByRole('link'));
     expect(mockOnProductClick).toHaveBeenCalledTimes(1);
@@ -55,14 +60,17 @@ describe('Componente Product', () => {
         product={mockProduct}
         onProductClick={mockOnProductClick}
         onBuyClick={mockOnBuyClick}
-      />
+      />,
     );
 
     const comprarButton = screen.getByRole('button', { name: /comprar/i });
     fireEvent.click(comprarButton);
 
     expect(mockOnBuyClick).toHaveBeenCalledTimes(1);
-    expect(mockOnBuyClick).toHaveBeenCalledWith(mockProduct.id, expect.any(Object));
+    expect(mockOnBuyClick).toHaveBeenCalledWith(
+      mockProduct.id,
+      expect.any(Object),
+    );
     expect(mockOnProductClick).not.toHaveBeenCalled();
   });
 });

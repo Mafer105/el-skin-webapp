@@ -1,25 +1,24 @@
-.inputContainer{
-    background-color: #F5F5F5;
-    border-radius: 5px;
-    width: 700px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 10px;
-    padding: 20px;
+.inputContainer {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  width: 700px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10px;
+  padding: 20px;
 }
 
-.input{
-    width: 300px;
-    height: 30px;
-    border: 0;
-    background-color: #F5F5F5;
-    border-style: none;
-    outline: none;
+.input {
+  width: 300px;
+  height: 30px;
+  border: 0;
+  background-color: #f5f5f5;
+  border-style: none;
+  outline: none;
 }
 
-.SearchBtn{
-    
+.SearchBtn {
   background: none;
   border: none;
   cursor: pointer;

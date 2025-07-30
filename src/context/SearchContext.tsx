@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
 interface SearchContextType {
   search: string;
@@ -9,15 +15,20 @@ interface SearchProviderProps {
   children: ReactNode;
 }
 
-export const SearchContext = createContext<SearchContextType | undefined>(undefined);
+export const SearchContext = createContext<SearchContextType | undefined>(
+  undefined,
+);
 
 export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
   const [search, setSearch] = useState('');
 
-  const contextValue = useMemo(() => ({
-    search,
-    setSearch
-  }), [search]);
+  const contextValue = useMemo(
+    () => ({
+      search,
+      setSearch,
+    }),
+    [search],
+  );
 
   return (
     <SearchContext.Provider value={contextValue}>
@@ -25,7 +36,6 @@ export const SearchProvider: React.FC<SearchProviderProps> = ({ children }) => {
     </SearchContext.Provider>
   );
 };
-
 
 export const useSearchContext = (): SearchContextType => {
   const context = useContext(SearchContext);

@@ -10,9 +10,9 @@ export default function AppRouter() {
     <Router>
       <Header />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/sobre' element={<Sobre />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/sobre" element={<Sobre />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Router>
