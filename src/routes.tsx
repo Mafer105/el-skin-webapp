@@ -7,7 +7,7 @@ import Home from './pages/Home';
 
 export default function AppRouter() {
   return (
-    <Router>
+    <>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -15,6 +15,6 @@ export default function AppRouter() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-    </Router>
+    </>
   );
 }

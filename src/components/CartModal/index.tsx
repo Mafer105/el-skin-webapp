@@ -70,7 +70,11 @@ export default function CarModal({
       <div className={styles.cart_modal}>
         <div className={styles.cart_modal_header}>
           <h2 id="cart-modal-title">Carrinho</h2>
-          <button className={styles.cart_modal_close} onClick={onClose}>
+          <button
+            className={styles.cart_modal_close}
+            onClick={onClose}
+            aria-label="Fechar carrinho"
+          >
             <FaTimes />
           </button>
         </div>
@@ -100,6 +104,7 @@ export default function CarModal({
                           <button
                             className={styles.quantity_btn}
                             onClick={() => remover(item)}
+                            aria-label={`Diminuir quantidade de ${item.name}`}
                           >
                             <FaMinus />
                           </button>
@@ -109,6 +114,7 @@ export default function CarModal({
                           <button
                             className={styles.quantity_btn}
                             onClick={() => adicionar(item)}
+                            aria-label={`Aumentar quantidade de ${item.name}`}
                           >
                             <FaPlus />
                           </button>
@@ -118,6 +124,7 @@ export default function CarModal({
                           className={styles.remove_btn}
                           title="Remover item"
                           onClick={() => deleteItem(item.id)}
+                          aria-label={`Remover ${item.name} do carrinho`}
                         >
                           <FaTrash />
                         </button>
