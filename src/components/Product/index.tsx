@@ -1,5 +1,85 @@
-import styles from './Product.module.css';
+import styled, { css } from 'styled-components';
 
+const tagStyles = {
+  protection: css`
+    background-color: #e3f2fd;
+    color: #1976d2;
+  `,
+  face: css`
+    background-color: #fce4ec;
+    color: #c2185b;
+  `,
+};
+
+type TagType = keyof typeof tagStyles;
+interface TagProps {
+  tagType: TagType;
+}
+
+const Container = styled.a`
+  width: 240px;
+  height: 400px;
+  margin-bottom: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProductImage = styled.img`
+  width: 240px;
+  height: 240px;
+  border-radius: 5px;
+  object-fit: cover;
+`;
+
+const Name = styled.p`
+  font-size: 20px;
+  margin: 12px 0 4px;
+`;
+
+const Description = styled.p`
+  width: 220px;
+  font-size: 16px;
+  color: #878787;
+  margin: 0;
+  flex-grow: 1;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+`;
+
+const Tag = styled.span<TagProps>`
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  ${({ tagType }) => tagStyles[tagType]}
+`;
+
+const Price = styled.h2`
+  font-size: 20px;
+  margin: 0;
+  flex-grow: 1;
+`;
+
+const BuyButton = styled.button`
+  background-color: #7045f5;
+  height: 40px;
+  width: 132px;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+`;
 export interface IProduct {
   id: string;
   name: string;
@@ -28,44 +108,39 @@ const Product: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <a
-      className={styles.container}
+    <Container
+      href="#"
       onClick={(e) => {
         e.preventDefault();
         onProductClick(product.id);
       }}
-      href="#"
     >
-      <img src={product.image} className={styles.img} alt="imagem do produto" />
-      <p className={styles.name}>
-        <strong>{product.name}</strong>
-      </p>
-      <p className={styles.description}>{product.description}</p>
-      <div className={styles.buttons}>
-        {product.tags.map((tag) => (
-          <span
-            key={`${product.id}-${tag.label}-${tag.type}`}
-            className={`${styles['product-tag']} ${styles['product-tag--' + tag.type]}`}
-          >
-            {tag.label}
-          </span>
-        ))}
-      </div>
+      <ProductImage src={product.image} alt="imagem do produto" />
 
-      <div className={styles.buttons}>
-        <h2 style={{ fontSize: '20px' }}>{formatPrice(product.price)}</h2>
-        <button
-          className={styles.btnRoxo}
+      <Name>
+        <strong>{product.name}</strong>
+      </Name>
+
+      <Description>{product.description}</Description>
+
+      <ButtonsContainer>
+        <Tag tagType={'protection'}>Protection</Tag>
+        <Tag tagType={'face'}>Face</Tag>
+      </ButtonsContainer>
+
+      <ButtonsContainer>
+        <Price>{formatPrice(product.price)}</Price>
+        <BuyButton
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onBuyClick(product.id, e);
           }}
-          type="button"
         >
           Comprar
-        </button>
-      </div>
-    </a>
+        </BuyButton>
+      </ButtonsContainer>
+    </Container>
   );
 };
 

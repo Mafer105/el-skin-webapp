@@ -1,6 +1,6 @@
-import styles from './Input.module.css';
 import { IoIosSearch } from 'react-icons/io';
 import React from 'react';
+import styled from 'styled-components';
 interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,6 +8,35 @@ interface InputProps {
   onSearchClick?: () => void;
   'aria-label': string;
 }
+
+const Container = styled.div`
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  width: 700px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10px;
+  padding: 20px;
+`;
+
+const InputComponent = styled.input`
+  width: 300px;
+  height: 30px;
+  border: 0;
+  background-color: #f5f5f5;
+  border-style: none;
+  outline: none;
+`;
+
+const Button = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default function Input({
   value,
@@ -17,25 +46,20 @@ export default function Input({
   'aria-label': ariaLabel,
 }: Readonly<InputProps>) {
   return (
-    <div className={styles.inputContainer}>
-      <input
+    <Container>
+      <InputComponent
         type="text"
         id="search-input"
-        className={styles.input}
         placeholder={placeholder || 'O que você está procurando?'}
         value={value}
         onChange={onChange}
         aria-label={ariaLabel}
       />
       {onSearchClick && (
-        <button
-          className={styles.SearchBtn}
-          onClick={onSearchClick}
-          aria-label="Pesquisar"
-        >
+        <Button onClick={onSearchClick} aria-label="Pesquisar">
           <IoIosSearch size={24} color="#1a1a1aff" />
-        </button>
+        </Button>
       )}
-    </div>
+    </Container>
   );
 }

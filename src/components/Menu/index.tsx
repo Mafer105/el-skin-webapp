@@ -1,8 +1,27 @@
-import styles from './Menu.module.css';
+import styled from 'styled-components';
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 60px;
+  padding-right: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+  height: 50px;
+
+  ul {
+    display: flex;
+    gap: 90px;
+  }
+
+  li {
+    list-style-type: none;
+  }
+`;
 export default function Menu() {
   return (
-    <div className={styles.container}>
+    <Container>
       <ul>
         <li>
           <p>Categorias</p>
@@ -17,9 +36,9 @@ export default function Menu() {
           <p>Ingredientes</p>
         </li>
       </ul>
-      <p className={styles.off}>
+      <p style={{ color: '#dc5e5e' }}>
         <strong>Kits até 50% off</strong>
       </p>
-    </div>
+    </Container>
   );
 }

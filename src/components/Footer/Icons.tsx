@@ -8,7 +8,14 @@ import {
   FaSpotify,
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import styles from './Footer.module.css';
+import styled from 'styled-components';
+
+const DivIcons = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+`;
 
 const socialMediaIcons: IconType[] = [
   FaInstagramSquare,
@@ -22,15 +29,15 @@ const socialMediaIcons: IconType[] = [
 
 export default function SocialIcons() {
   return (
-    <div className={styles.icons}>
+    <DivIcons>
       {socialMediaIcons.map((IconComponent, index) => (
         <IconComponent
           key={index}
           size={32}
           color="#6F6E6E"
-          className={styles.socialIcon}
+          style={{ cursor: 'pointer', transition: 'opacity 0.2s' }}
         />
       ))}
-    </div>
+    </DivIcons>
   );
 }

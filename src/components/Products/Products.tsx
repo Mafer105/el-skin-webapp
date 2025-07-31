@@ -1,9 +1,26 @@
 import { useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
-import styles from './Products.module.css';
 import { productService } from '../../service/productService';
 import { useSearchContext } from '../../context/SearchContext';
 import { useCartContext } from '../../context/CartContext';
+import styled from 'styled-components';
+
+const Container = styled.section`
+  width: 80%;
+  margin: 0 auto;
+`;
+const Title = styled.h3`
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+`;
+
+const Grid = styled.section`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 100px;
+  justify-self: center;
+`;
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -48,9 +65,9 @@ export default function Products() {
   };
 
   return (
-    <section className={styles.container}>
-      <h3>nossos queridinhos estão aqui</h3>
-      <section className={styles.products}>
+    <Container>
+      <Title>nossos queridinhos estão aqui</Title>
+      <Grid>
         {filteredProducts.map((product) => (
           <Product
             key={product.id}
@@ -59,7 +76,7 @@ export default function Products() {
             onBuyClick={handleBuyClick}
           />
         ))}
-      </section>
-    </section>
+      </Grid>
+    </Container>
   );
 }

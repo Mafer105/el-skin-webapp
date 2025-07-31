@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styles from './Carousel.module.css';
 import { carouselService } from '../../service/carouselService';
+import styled from 'styled-components';
 export interface Slide {
   id: string;
   subtitle: string;
@@ -8,6 +8,54 @@ export interface Slide {
   description: string;
   backgroundImage: string;
 }
+
+const Container = styled.div`
+  width: 100%;
+  height: 680px;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  box-sizing: border-box;
+`;
+
+const Button = styled.button`
+  width: 40px;
+  height: 40px;
+  border: 0px;
+  background-color: #ffffff80;
+  align-self: center;
+  cursor: pointer;
+`;
+
+const BuyButton = styled.button`
+  width: 200px;
+  height: 45px;
+  background-color: #7045f5;
+  color: white;
+  border: 0px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 20px;
+`;
+
+const Content = styled.div`
+  align-self: center;
+  flex-grow: 1;
+  margin-left: 60px;
+`;
+
+const Title = styled.h1`
+  width: 260px;
+  color: #94426e;
+`;
+
+const Subtitle = styled.p`
+  width: 260px;
+  color: #724a75;
+`;
 
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,25 +86,20 @@ export default function Carousel() {
   }
 
   return (
-    <div
-      className={styles.container}
+    <Container
       style={{
         backgroundImage: `url(${slides[currentIndex].backgroundImage})`,
       }}
     >
-      <button onClick={goToPrevious} className={styles.btn}>
-        &#10094;
-      </button>
+      <Button onClick={goToPrevious}>&#10094;</Button>
 
-      <div className={styles.content}>
-        <h1 className={styles.title}>{slides[currentIndex].title}</h1>
-        <p className={styles.subtitle}>{slides[currentIndex].subtitle}</p>
-        <button className={styles.btnComprar}>Comprar Agora &#10095;</button>
-      </div>
+      <Content>
+        <Title>{slides[currentIndex].title}</Title>
+        <Subtitle>{slides[currentIndex].subtitle}</Subtitle>
+        <BuyButton>Comprar Agora &#10095;</BuyButton>
+      </Content>
 
-      <button onClick={goToNext} className={styles.btn}>
-        &#10095;
-      </button>
-    </div>
+      <Button onClick={goToNext}>&#10095;</Button>
+    </Container>
   );
 }
