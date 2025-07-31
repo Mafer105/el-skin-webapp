@@ -1,4 +1,4 @@
-import { render, screen } from '../../test-utils'; 
+import { render, screen } from '../../test-utils';
 import '@testing-library/jest-dom';
 import Footer from './index';
 
@@ -12,14 +12,20 @@ describe('Componente Footer', () => {
   test('deve renderizar todos os títulos e links das colunas', () => {
     render(<Footer />);
 
-    expect(screen.getByRole('heading', { name: /Sobre a AL SKIN/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Loja AL SKIN/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Atendimento/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Sobre a AL SKIN/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Loja AL SKIN/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Atendimento/i }),
+    ).toBeInTheDocument();
 
     expect(screen.getByText('- quem somos')).toBeInTheDocument();
     expect(screen.getByText('- lojas físicas')).toBeInTheDocument();
     expect(screen.getByText('- oi@aiskin.com.br')).toBeInTheDocument();
-    
+
     expect(screen.getByTestId('mock-icons')).toBeInTheDocument();
   });
 
@@ -34,7 +40,9 @@ describe('Componente Footer', () => {
   test('deve renderizar o título como um cabeçalho simples quando "path" for nulo', () => {
     render(<Footer />);
 
-    const headingElement = screen.getByRole('heading', { name: /Loja AL SKIN/i });
+    const headingElement = screen.getByRole('heading', {
+      name: /Loja AL SKIN/i,
+    });
     expect(headingElement).toBeInTheDocument();
     expect(headingElement.tagName).toBe('H2');
 

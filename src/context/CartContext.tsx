@@ -3,7 +3,6 @@ import {
   useContext,
   useReducer,
   ReactNode,
-  Dispatch,
   useMemo,
 } from 'react';
 import { IProduct } from '../components/Product';
