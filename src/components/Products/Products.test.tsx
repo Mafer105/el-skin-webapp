@@ -2,13 +2,15 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Products from './Products';
 import { productService } from '../../service/productService';
-import { SearchContext } from '../../context/SearchContext';
+import { useSearch } from '../../hooks/useSearch';
 import { CartContext } from '../../context/CartContext';
 
 jest.mock('../../service/productService');
 const mockedProductService = productService as jest.Mocked<
   typeof productService
 >;
+
+jest.mock('../../hooks/useSearch');
 
 const mockProducts = [
   {
@@ -40,6 +42,10 @@ describe('Componente Products', () => {
   });
 
   const renderComponent = (search: string) => {
+    (useSearch as jest.Mock).mockReturnValue({
+      term: search,
+      setTerm: jest.fn(),
+    });
     return render(
       <CartContext.Provider
         value={{
@@ -51,11 +57,7 @@ describe('Componente Products', () => {
           clearCart: jest.fn(),
         }}
       >
-        <SearchContext.Provider
-          value={{ search: search, setSearch: jest.fn() }}
-        >
-          <Products />
-        </SearchContext.Provider>
+        <Products />
       </CartContext.Provider>,
     );
   };

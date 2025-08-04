@@ -8,7 +8,7 @@ const mockProduct: IProduct = {
   description: 'Um sérum para hidratação profunda.',
   price: 89.9,
   image: 'image-url.jpg',
-  tags: [{ label: 'Vegano', type: 'normal' }],
+  tags: [{ label: 'Protection', type: 'protection' }],
 };
 
 describe('Componente Product', () => {
@@ -34,7 +34,7 @@ describe('Componente Product', () => {
       screen.getByText('Um sérum para hidratação profunda.'),
     ).toBeInTheDocument();
     expect(screen.getByText('R$ 89,90')).toBeInTheDocument();
-    expect(screen.getByText('Vegano')).toBeInTheDocument();
+    expect(screen.getByText('Protection')).toBeInTheDocument();
     expect(screen.getByAltText('imagem do produto')).toHaveAttribute(
       'src',
       'image-url.jpg',

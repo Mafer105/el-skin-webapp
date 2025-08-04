@@ -1,5 +1,6 @@
 import App from './App';
-import { render, screen, fireEvent } from './test-utils';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
 jest.mock(
@@ -29,16 +30,22 @@ jest.mock('./components/Menu', () => {
   };
 });
 
+const renderWithRouter = (initialEntries = ['/']) => {
+  return render(
+    <MemoryRouter initialEntries={initialEntries}>
+      <App />
+    </MemoryRouter>,
+  );
+};
+
 describe('Testes de Roteamento do App', () => {
   test('deve renderizar a página inicial na rota raiz ("/")', () => {
-    render(<App />);
-
+    renderWithRouter(['/']);
     expect(screen.getByText('Página Inicial')).toBeInTheDocument();
   });
 
   test('deve navegar para a página Sobre ao clicar no link', () => {
-    render(<App />);
-
+    renderWithRouter(['/']);
     expect(screen.getByText('Página Inicial')).toBeInTheDocument();
 
     const sobreLink = screen.getByRole('link', { name: 'Sobre' });
@@ -50,8 +57,7 @@ describe('Testes de Roteamento do App', () => {
 
   test('deve renderizar uma página de "Não Encontrado" para uma rota inválida', () => {
     const rotaInvalida = '/uma-pagina-que-nao-existe';
-    render(<App />, { initialEntries: [rotaInvalida] });
-
+    renderWithRouter([rotaInvalida]);
     expect(screen.getByText('Página não encontrada')).toBeInTheDocument();
   });
 });

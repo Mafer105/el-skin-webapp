@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from './index';
-import { SearchContext } from '../../context/SearchContext';
 import { CartContext } from '../../context/CartContext';
+import { useSearch } from '../../hooks/useSearch';
 
 jest.mock('../Input', () => {
   return function MockInput({ onSearchClick, ...rest }: any) {
@@ -17,10 +17,16 @@ jest.mock(
       isOpen ? <div data-testid="mock-cart-modal">Seu Carrinho</div> : null,
 );
 
+jest.mock('../../hooks/useSearch');
+
 describe('Componente Header', () => {
   const mockSetSearch = jest.fn();
 
   const renderComponent = (search: string, totalItems = 0) => {
+    (useSearch as jest.Mock).mockReturnValue({
+      term: search,
+      setTerm: mockSetSearch,
+    });
     return render(
       <CartContext.Provider
         value={{
@@ -32,11 +38,7 @@ describe('Componente Header', () => {
           clearCart: jest.fn(),
         }}
       >
-        <SearchContext.Provider
-          value={{ search: search, setSearch: mockSetSearch }}
-        >
-          <Header />
-        </SearchContext.Provider>
+        <Header />
       </CartContext.Provider>,
     );
   };

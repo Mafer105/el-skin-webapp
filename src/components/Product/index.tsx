@@ -13,7 +13,7 @@ const tagStyles = {
 
 type TagType = keyof typeof tagStyles;
 interface TagProps {
-  tagType: TagType;
+  $tagType: TagType;
 }
 
 const Container = styled.a`
@@ -61,7 +61,7 @@ const Tag = styled.span<TagProps>`
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  ${({ tagType }) => tagStyles[tagType]}
+  ${({ $tagType }) => tagStyles[$tagType]}
 `;
 
 const Price = styled.h2`
@@ -124,8 +124,8 @@ const Product: React.FC<ProductCardProps> = ({
       <Description>{product.description}</Description>
 
       <ButtonsContainer>
-        <Tag tagType={'protection'}>Protection</Tag>
-        <Tag tagType={'face'}>Face</Tag>
+        <Tag $tagType={'protection'}>Protection</Tag>
+        <Tag $tagType={'face'}>Face</Tag>
       </ButtonsContainer>
 
       <ButtonsContainer>
