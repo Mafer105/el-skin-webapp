@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
 import { productService } from '../../service/productService';
-import { useSearchContext } from '../../context/SearchContext';
 import { useCartContext } from '../../context/CartContext';
 import styled from 'styled-components';
+import { useSearch } from '../../hooks/useSearch';
 
 const Container = styled.section`
   width: 80%;
@@ -26,7 +26,7 @@ export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
-  const { search } = useSearchContext();
+  const { term } = useSearch();
   const { adicionarProduto } = useCartContext();
 
   useEffect(() => {
@@ -38,18 +38,18 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
-    if (search) {
+    if (term) {
       setFilteredProducts(
         products.filter(
           (product) =>
-            product.name.toLowerCase().includes(search.toLowerCase()) ||
-            product.description.toLowerCase().includes(search.toLowerCase()),
+            product.name.toLowerCase().includes(term.toLowerCase()) ||
+            product.description.toLowerCase().includes(term.toLowerCase()),
         ),
       );
     } else {
       setFilteredProducts([...products]);
     }
-  }, [search, products]);
+  }, [term, products]);
 
   const handleProductClick = (productId: string) => {
     console.log(`Produto clicado: ${productId}`);

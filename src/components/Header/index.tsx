@@ -1,11 +1,11 @@
 import Input from '../Input';
 import { IoBagHandleOutline } from 'react-icons/io5';
 import Menu from '../Menu';
-import { useSearchContext } from '../../context/SearchContext';
 import { useState } from 'react';
 import CartModal from '../CartModal';
 import { useCartContext } from '../../context/CartContext';
 import styled from 'styled-components';
+import { useSearch } from '../../hooks/useSearch';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ const CartButton = styled.button`
 `;
 
 export default function Header() {
-  const { search, setSearch } = useSearchContext();
+  const { term, setTerm } = useSearch();
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const { totalItems } = useCartContext();
 
@@ -50,11 +50,11 @@ export default function Header() {
   };
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch(e.target.value);
+    setTerm(e.target.value);
   }
 
   function onClickSearch(): void {
-    console.log(`Você pesquisou por: ${search}`);
+    console.log(`Você pesquisou por: ${term}`);
   }
 
   function handleOnClickCart() {
@@ -66,7 +66,7 @@ export default function Header() {
       <Container>
         <h1>AL SKIN</h1>
         <Input
-          value={search}
+          value={term}
           onChange={handleOnChange}
           onSearchClick={onClickSearch}
           aria-label="Campo de  busca de produtos"
