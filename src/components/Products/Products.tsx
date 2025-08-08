@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
 import { productService } from '../../service/productService';
-import { useCartContext } from '../../context/CartContext';
+import { useCart } from '../../hooks/useCart';
 import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
 
@@ -27,7 +27,7 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
   const { term } = useSearch();
-  const { adicionarProduto } = useCartContext();
+  const { addItem } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -59,7 +59,7 @@ export default function Products() {
     event.stopPropagation();
     const productToAdd = products.find((p) => p.id === productId);
     if (productToAdd) {
-      adicionarProduto(productToAdd);
+      addItem(productToAdd);
       alert(`${productToAdd.name} foi adicionado ao carrinho!`);
     }
   };

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
-import { CartItem, useCartContext } from '../../context/CartContext';
+import { useCart } from '../../hooks/useCart';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -292,7 +292,7 @@ export default function CartModal({
   isOpen,
   onClose,
 }: Readonly<CartModalProps>) {
-  const { items, removerProduto, updateQuantidade } = useCartContext();
+  const { items, updateQuantity, removeItem: removerProduto, totalPrice: totalPriceMemo } = useCart();
 
   const cartTotal = useMemo(() => {
     return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -317,18 +317,6 @@ export default function CartModal({
     if (e.key === 'Escape') {
       onClose();
     }
-  };
-
-  const remover = (item: CartItem) => {
-    if (item.quantity > 1) {
-      updateQuantidade(item.id, item.quantity - 1);
-    } else {
-      removerProduto(item.id);
-    }
-  };
-
-  const adicionar = (item: CartItem) => {
-    updateQuantidade(item.id, item.quantity + 1);
   };
 
   return (
@@ -367,14 +355,14 @@ export default function CartModal({
                         <QuantityLabel>Quantidade</QuantityLabel>
                         <QuantityControl>
                           <QuantityButton
-                            onClick={() => remover(item)}
+                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             aria-label={`Diminuir quantidade de ${item.name}`}
                           >
                             <FaMinus />
                           </QuantityButton>
                           <QuantityDisplay>{item.quantity}</QuantityDisplay>
                           <QuantityButton
-                            onClick={() => adicionar(item)}
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             aria-label={`Aumentar quantidade de ${item.name}`}
                           >
                             <FaPlus />

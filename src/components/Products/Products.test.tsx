@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import Products from './Products';
 import { productService } from '../../service/productService';
 import { useSearch } from '../../hooks/useSearch';
-import { CartContext } from '../../context/CartContext';
 
 jest.mock('../../service/productService');
 const mockedProductService = productService as jest.Mocked<
@@ -11,6 +10,16 @@ const mockedProductService = productService as jest.Mocked<
 >;
 
 jest.mock('../../hooks/useSearch');
+
+jest.mock('../../hooks/useCart', () => ({
+  addItem: jest.fn(),
+  items: [],
+  removeItem: jest.fn(),
+  updateQuantity: jest.fn(),
+  clearCart: jest.fn(),
+  getTotalItems: () => 0,
+  totalPrice: 0,
+}));
 
 const mockProducts = [
   {
@@ -47,18 +56,7 @@ describe('Componente Products', () => {
       setTerm: jest.fn(),
     });
     return render(
-      <CartContext.Provider
-        value={{
-          items: [],
-          totalItems: 0,
-          adicionarProduto: mockAdicionarProduto,
-          removerProduto: jest.fn(),
-          updateQuantidade: jest.fn(),
-          clearCart: jest.fn(),
-        }}
-      >
         <Products />
-      </CartContext.Provider>,
     );
   };
 
