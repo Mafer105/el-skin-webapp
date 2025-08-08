@@ -9,12 +9,17 @@ export interface Slide {
   backgroundImage: string;
 }
 
-const Container = styled.div`
+interface ContainerProps {
+  imageUrl: string;
+}
+
+const Container = styled.div<ContainerProps>`
   width: 100%;
   height: 680px;
   display: flex;
   background-size: cover;
   background-position: center;
+  background-image: url(${(props) => props.imageUrl});
   align-items: center;
   justify-content: space-between;
   padding: 0 50px;
@@ -86,11 +91,7 @@ export default function Carousel() {
   }
 
   return (
-    <Container
-      style={{
-        backgroundImage: `url(${slides[currentIndex].backgroundImage})`,
-      }}
-    >
+    <Container imageUrl={slides[currentIndex].backgroundImage}>
       <Button onClick={goToPrevious}>&#10094;</Button>
 
       <Content>

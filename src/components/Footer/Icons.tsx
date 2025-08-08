@@ -27,16 +27,27 @@ const socialMediaIcons: IconType[] = [
   FaSpotify,
 ];
 
+const StyledIconWrapper = styled.div`
+  & > svg {
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+`;
+
 export default function SocialIcons() {
   return (
     <DivIcons>
       {socialMediaIcons.map((IconComponent, index) => (
-        <IconComponent
-          key={index}
-          size={32}
-          color="#6F6E6E"
-          style={{ cursor: 'pointer', transition: 'opacity 0.2s' }}
-        />
+        <StyledIconWrapper key={index}>
+          <IconComponent
+            key={index}
+            size={32}
+            color="#6F6E6E"
+          />
+        </StyledIconWrapper>
       ))}
     </DivIcons>
   );

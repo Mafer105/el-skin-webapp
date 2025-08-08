@@ -34,9 +34,13 @@ const CartButton = styled.button`
   justify-content: center;
   transition: background-color 0.3s ease;
 
-  :hover {
+  &:hover {
     background-color: #f0f0f0;
   }
+`;
+
+const DivFather = styled.div`
+   border-bottom: '1px solid #ccc' 
 `;
 
 export default function Header() {
@@ -60,7 +64,7 @@ export default function Header() {
   }
 
   return (
-    <div style={{ borderBottom: '1px solid #ccc' }}>
+    <DivFather>
       <Container>
         <h1>AL SKIN</h1>
         <Input
@@ -77,6 +81,6 @@ export default function Header() {
       </Container>
       <Menu />
       <CartModal isOpen={isCartModalOpen} onClose={handleCloseCart} />
-    </div>
+    </DivFather>
   );
 }

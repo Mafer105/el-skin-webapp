@@ -19,6 +19,11 @@ const Container = styled.div`
     list-style-type: none;
   }
 `;
+
+const Promocao = styled.p`
+  color: #dc5e5e
+`;
+
 export default function Menu() {
   return (
     <Container>
@@ -36,9 +41,9 @@ export default function Menu() {
           <p>Ingredientes</p>
         </li>
       </ul>
-      <p style={{ color: '#dc5e5e' }}>
+      <Promocao>
         <strong>Kits até 50% off</strong>
-      </p>
+      </Promocao>
     </Container>
   );
 }
