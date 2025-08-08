@@ -4,6 +4,7 @@ import { productService } from '../../service/productService';
 import { useCart } from '../../hooks/useCart';
 import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
+import { useProducts } from '../../hooks/useProducts';
 
 const Container = styled.section`
   width: 80%;
@@ -23,25 +24,22 @@ const Grid = styled.section`
 `;
 
 export default function Products() {
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const { products, loadProducts } = useProducts();
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
   const { term } = useSearch();
   const { addItem } = useCart();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await productService.getProducts();
-      setProducts(response);
-    };
-    fetchProducts();
-  }, []);
-
+    if (products.length === 0) {
+      loadProducts();
+    }
+  }, [products.length, loadProducts]);
   useEffect(() => {
     if (term) {
       setFilteredProducts(
         products.filter(
-          (product) =>
+          (product: { name: string; description: string }) =>
             product.name.toLowerCase().includes(term.toLowerCase()) ||
             product.description.toLowerCase().includes(term.toLowerCase()),
         ),
@@ -57,7 +55,9 @@ export default function Products() {
 
   const handleBuyClick = (productId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    const productToAdd = products.find((p) => p.id === productId);
+    const productToAdd = products.find(
+      (p: { id: string }) => p.id === productId,
+    );
     if (productToAdd) {
       addItem(productToAdd);
       alert(`${productToAdd.name} foi adicionado ao carrinho!`);

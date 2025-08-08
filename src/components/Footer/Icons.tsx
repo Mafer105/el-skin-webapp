@@ -42,11 +42,7 @@ export default function SocialIcons() {
     <DivIcons>
       {socialMediaIcons.map((IconComponent, index) => (
         <StyledIconWrapper key={index}>
-          <IconComponent
-            key={index}
-            size={32}
-            color="#6F6E6E"
-          />
+          <IconComponent key={index} size={32} color="#6F6E6E" />
         </StyledIconWrapper>
       ))}
     </DivIcons>

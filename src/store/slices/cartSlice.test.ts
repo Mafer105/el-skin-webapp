@@ -5,7 +5,7 @@ import cartReducer, {
   ICartItem,
   removeItem,
   updateQuantity,
-} from './cartSice';
+} from './cartSlice';
 
 const estadoAnterior: CartState = {
   items: [],

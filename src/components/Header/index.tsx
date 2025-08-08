@@ -40,7 +40,7 @@ const CartButton = styled.button`
 `;
 
 const DivFather = styled.div`
-   border-bottom: '1px solid #ccc' 
+  border-bottom: '1px solid #ccc';
 `;
 
 export default function Header() {

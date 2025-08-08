@@ -1,99 +1,117 @@
+// Products.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Products from './Products';
-import { productService } from '../../service/productService';
-import { useSearch } from '../../hooks/useSearch';
+import { IProduct } from '../Product';
 
-jest.mock('../../service/productService');
-const mockedProductService = productService as jest.Mocked<
-  typeof productService
->;
-
+jest.mock('../../hooks/useProducts');
 jest.mock('../../hooks/useSearch');
+jest.mock('../../hooks/useCart');
 
-jest.mock('../../hooks/useCart', () => ({
-  addItem: jest.fn(),
-  items: [],
-  removeItem: jest.fn(),
-  updateQuantity: jest.fn(),
-  clearCart: jest.fn(),
-  getTotalItems: () => 0,
-  totalPrice: 0,
-}));
+jest.mock('../Product', () => {
+  return jest.fn(({ product, onBuyClick, onProductClick }) => (
+    <div data-testid={`product-${product.id}`} onClick={() => onProductClick(product.id)}>
+      <span>{product.name}</span>
+      <button onClick={(e) => onBuyClick(product.id, e)}>Comprar</button>
+    </div>
+  ));
+});
 
-const mockProducts = [
-  {
-    id: '1',
-    name: 'Produto Teste 1',
-    description: 'Descrição A',
-    price: 10,
-    image: '',
-    tags: [],
-  },
-  {
-    id: '2',
-    name: 'Produto Teste 2',
-    description: 'Descrição B',
-    price: 20,
-    image: '',
-    tags: [],
-  },
+import { useProducts } from '../../hooks/useProducts';
+import { useSearch } from '../../hooks/useSearch';
+import { useCart } from '../../hooks/useCart';
+
+const mockedUseProducts = useProducts as jest.Mock;
+const mockedUseSearch = useSearch as jest.Mock;
+const mockedUseCart = useCart as jest.Mock;
+
+const mockProducts: IProduct[] = [
+  { id: '1', name: 'Caneca Coder', description: 'Uma caneca para devs.', price: 49.9, image: 'url1', tags: [{ label: 'Protection', type: 'protection' }] },
+  { id: '2', name: 'Camiseta Bug', description: 'Não é um bug, é uma feature.', price: 79.9, image: 'url2',tags: [{ label: 'Protection', type: 'protection' }] },
+  { id: '3', name: 'Adesivo React', description: 'Um adesivo legal de React.', price: 9.9, image: 'url3',tags: [{ label: 'Protection', type: 'protection' }] },
 ];
 
 describe('Componente Products', () => {
-  const mockAdicionarProduto = jest.fn();
-  jest.spyOn(window, 'alert').mockImplementation(() => {});
+  const mockLoadProducts = jest.fn();
+  const mockAddItem = jest.fn();
 
   beforeEach(() => {
-    mockedProductService.getProducts.mockResolvedValue(mockProducts);
-    mockAdicionarProduto.mockClear();
-    (window.alert as jest.Mock).mockClear();
-  });
-
-  const renderComponent = (search: string) => {
-    (useSearch as jest.Mock).mockReturnValue({
-      term: search,
-      setTerm: jest.fn(),
+    jest.clearAllMocks();
+    
+    mockedUseProducts.mockReturnValue({
+      products: mockProducts,
+      loadProducts: mockLoadProducts,
     });
-    return render(<Products />);
-  };
-
-  test('deve buscar e renderizar a lista de produtos', async () => {
-    renderComponent('');
-
-    expect(
-      screen.getByText('nossos queridinhos estão aqui'),
-    ).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText('Produto Teste 1')).toBeInTheDocument();
-      expect(screen.getByText('Produto Teste 2')).toBeInTheDocument();
+    mockedUseSearch.mockReturnValue({
+      term: '',
+    });
+    mockedUseCart.mockReturnValue({
+      addItem: mockAddItem,
     });
   });
 
-  test('deve filtrar produtos com base na busca', async () => {
-    renderComponent('Teste 1');
+  it('deve renderizar o título e os produtos corretamente', () => {
+    render(<Products />);
+    
+    expect(screen.getByText('nossos queridinhos estão aqui')).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText('Produto Teste 1')).toBeInTheDocument();
-      expect(screen.queryByText('Produto Teste 2')).not.toBeInTheDocument();
-    });
+    expect(screen.getByText('Caneca Coder')).toBeInTheDocument();
+    expect(screen.getByText('Camiseta Bug')).toBeInTheDocument();
+    expect(screen.getByText('Adesivo React')).toBeInTheDocument();
   });
 
-  test('deve chamar adicionarProduto e mostrar um alerta ao clicar em comprar', async () => {
-    renderComponent('');
-
-    const comprarButtons = await screen.findAllByRole('button', {
-      name: /comprar/i,
+  it('deve chamar loadProducts se a lista de produtos inicial estiver vazia', () => {
+    mockedUseProducts.mockReturnValue({
+      products: [],
+      loadProducts: mockLoadProducts,
     });
 
-    fireEvent.click(comprarButtons[0]);
+    render(<Products />);
+    expect(mockLoadProducts).toHaveBeenCalledTimes(1);
 
-    expect(mockAdicionarProduto).toHaveBeenCalledTimes(1);
-    expect(mockAdicionarProduto).toHaveBeenCalledWith(mockProducts[0]);
+  }),
+  it('deve filtrar os produtos com base no termo de busca', () => {
+    mockedUseSearch.mockReturnValue({
+      term: 'caneca',
+    });
 
-    expect(window.alert).toHaveBeenCalledWith(
-      'Produto Teste 1 foi adicionado ao carrinho!',
-    );
+    render(<Products />);
+
+    expect(screen.getByText('Caneca Coder')).toBeInTheDocument();
+    
+    expect(screen.queryByText('Camiseta Bug')).not.toBeInTheDocument();
+    expect(screen.queryByText('Adesivo React')).not.toBeInTheDocument();
+  });
+
+  it('deve exibir todos os produtos quando o termo de busca é removido', () => {
+    const { rerender } = render(<Products />);
+    mockedUseSearch.mockReturnValue({ term: 'caneca' });
+    rerender(<Products />);
+    expect(screen.queryByText('Camiseta Bug')).not.toBeInTheDocument();
+
+    mockedUseSearch.mockReturnValue({ term: '' });
+    rerender(<Products />);
+
+    expect(screen.getByText('Caneca Coder')).toBeInTheDocument();
+    expect(screen.getByText('Camiseta Bug')).toBeInTheDocument();
+    expect(screen.getByText('Adesivo React')).toBeInTheDocument();
+  });
+
+  it('deve chamar a função addItem quando o botão de comprar é clicado', () => {
+    window.alert = jest.fn();
+
+    render(<Products />);
+
+    const buyButton = screen.getByTestId('product-1').querySelector('button');
+    
+    expect(buyButton).toBeInTheDocument();
+
+    fireEvent.click(buyButton!);
+
+    expect(mockAddItem).toHaveBeenCalledTimes(1);
+    
+    expect(mockAddItem).toHaveBeenCalledWith(mockProducts[0]);
+    
+    expect(window.alert).toHaveBeenCalledWith('Caneca Coder foi adicionado ao carrinho!');
   });
 });

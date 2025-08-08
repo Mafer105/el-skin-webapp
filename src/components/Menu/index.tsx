@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const Promocao = styled.p`
-  color: #dc5e5e
+  color: #dc5e5e;
 `;
 
 export default function Menu() {
