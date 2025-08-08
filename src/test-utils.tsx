@@ -1,6 +1,5 @@
 import { render, RenderOptions } from '@testing-library/react';
 import { MemoryRouter, MemoryRouterProps } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
 import { ReactElement, FC, ReactNode } from 'react';
 
 type CustomRenderOptions = Omit<RenderOptions, 'wrapper'> & MemoryRouterProps;
@@ -12,9 +11,7 @@ const customRender = (
 ) => {
   const AllTheProviders: FC<{ children: ReactNode }> = ({ children }) => {
     return (
-      <CartProvider>
         <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-      </CartProvider>
     );
   };
 

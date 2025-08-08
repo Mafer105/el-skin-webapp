@@ -7,7 +7,7 @@ import {
   updateQuantity,
   clearCart,
   ICartItem,
-} from '../store/slices/cartSlice';
+} from '../store/slices/cartSice';
 
 export interface UseCartReturn {
   items: ICartItem[];

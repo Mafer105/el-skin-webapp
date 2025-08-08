@@ -292,7 +292,12 @@ export default function CartModal({
   isOpen,
   onClose,
 }: Readonly<CartModalProps>) {
-  const { items, updateQuantity, removeItem: removerProduto, totalPrice: totalPriceMemo } = useCart();
+  const {
+    items,
+    updateQuantity,
+    removeItem: removerProduto,
+    totalPrice: totalPriceMemo,
+  } = useCart();
 
   const cartTotal = useMemo(() => {
     return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -355,14 +360,21 @@ export default function CartModal({
                         <QuantityLabel>Quantidade</QuantityLabel>
                         <QuantityControl>
                           <QuantityButton
-                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                            onClick={() =>
+                              updateQuantity(
+                                item.id,
+                                Math.max(1, item.quantity - 1),
+                              )
+                            }
                             aria-label={`Diminuir quantidade de ${item.name}`}
                           >
                             <FaMinus />
                           </QuantityButton>
                           <QuantityDisplay>{item.quantity}</QuantityDisplay>
                           <QuantityButton
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
                             aria-label={`Aumentar quantidade de ${item.name}`}
                           >
                             <FaPlus />

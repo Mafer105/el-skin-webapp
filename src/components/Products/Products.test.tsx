@@ -55,9 +55,7 @@ describe('Componente Products', () => {
       term: search,
       setTerm: jest.fn(),
     });
-    return render(
-        <Products />
-    );
+    return render(<Products />);
   };
 
   test('deve buscar e renderizar a lista de produtos', async () => {

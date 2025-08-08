@@ -4,15 +4,16 @@ import { act } from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import searchReducer from '../store/slices/searchSlice';
-import cartReducer from '../store/slices/cartSlice';
+import cartReducer from '../store/slices/cartSice';
 import { ReactNode } from 'react';
 
-const createTestStore = () => configureStore({
-  reducer: {
-    search: searchReducer,
-    cart: cartReducer,
-  },
-});
+const createTestStore = () =>
+  configureStore({
+    reducer: {
+      search: searchReducer,
+      cart: cartReducer,
+    },
+  });
 
 const createWrapper = (store: ReturnType<typeof createTestStore>) => {
   const TestWrapper = ({ children }: { children: ReactNode }) => (
@@ -28,7 +29,7 @@ it('deve inicializar corretamente o carrinho vazio', () => {
   const wrapper = createWrapper(store);
 
   // Act
-  const { result } = renderHook(() => useCart(), {wrapper});
+  const { result } = renderHook(() => useCart(), { wrapper });
 
   // Assert
   expect(result.current.items).toEqual([]);
@@ -42,14 +43,14 @@ it('deve adicionar um item ao carrinho', () => {
   const wrapper = createWrapper(store);
 
   // Arrange
-  const { result } = renderHook(() => useCart(), {wrapper});
+  const { result } = renderHook(() => useCart(), { wrapper });
 
   // Act
   const newItem = {
     id: '1',
     name: 'Produto Teste',
     price: 99.99,
-    image: '/test.jpg'
+    image: '/test.jpg',
   };
 
   act(() => {
@@ -60,7 +61,7 @@ it('deve adicionar um item ao carrinho', () => {
   expect(result.current.items).toHaveLength(1);
   expect(result.current.items[0]).toEqual({
     ...newItem,
-    quantity: 1
+    quantity: 1,
   });
   expect(result.current.totalPrice).toBe(99.99);
 });
@@ -71,14 +72,14 @@ it('deve adicionar um item ao carrinho', () => {
   const wrapper = createWrapper(store);
 
   // Act
-  const { result } = renderHook(() => useCart(), {wrapper});
+  const { result } = renderHook(() => useCart(), { wrapper });
 
   // Act
   const newItem = {
     id: '1',
     name: 'Produto Teste',
     price: 99.99,
-    image: '/test.jpg'
+    image: '/test.jpg',
   };
 
   act(() => {
@@ -93,7 +94,7 @@ it('deve adicionar um item ao carrinho', () => {
   expect(result.current.items).toHaveLength(1);
   expect(result.current.items[0]).toEqual({
     ...newItem,
-    quantity: 2
+    quantity: 2,
   });
   expect(result.current.totalPrice).toBe(199.98);
 });

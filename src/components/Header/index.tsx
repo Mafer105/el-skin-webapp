@@ -3,7 +3,6 @@ import { IoBagHandleOutline } from 'react-icons/io5';
 import Menu from '../Menu';
 import { useState } from 'react';
 import CartModal from '../CartModal';
-import { useCartContext } from '../../context/CartContext';
 import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
 
@@ -43,7 +42,6 @@ const CartButton = styled.button`
 export default function Header() {
   const { term, setTerm } = useSearch();
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
-  const { totalItems } = useCartContext();
 
   const handleCloseCart = () => {
     setIsCartModalOpen(false);
@@ -74,7 +72,6 @@ export default function Header() {
         <Actions>
           <CartButton onClick={handleOnClickCart} aria-label="Abrir carrinho">
             <IoBagHandleOutline size={24} />
-            {totalItems > 0 && <span>{totalItems}</span>}
           </CartButton>
         </Actions>
       </Container>
