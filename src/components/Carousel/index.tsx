@@ -10,7 +10,7 @@ export interface Slide {
 }
 
 interface ContainerProps {
-  imageUrl: string;
+  $imageUrl: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -19,7 +19,7 @@ const Container = styled.div<ContainerProps>`
   display: flex;
   background-size: cover;
   background-position: center;
-  background-image: url(${(props) => props.imageUrl});
+  background-image: url(${(props) => props.$imageUrl});
   align-items: center;
   justify-content: space-between;
   padding: 0 50px;
@@ -64,7 +64,11 @@ const Subtitle = styled.p`
 
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { data: itemsCarousel = [], isLoading: isLoadingCarousel, error: errorCarousel } = useGetCarouselItemsQuery();
+  const {
+    data: itemsCarousel = [],
+    isLoading: isLoadingCarousel,
+    error: errorCarousel,
+  } = useGetCarouselItemsQuery();
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -78,29 +82,32 @@ export default function Carousel() {
     setCurrentIndex(newIndex);
   };
 
+  if (isLoadingCarousel) {
+    return <div>Carregando...</div>;
+  }
+
+  if (errorCarousel) {
+    return <h6>Ocorreu um erro: {JSON.stringify(errorCarousel)}</h6>;
+  }
+
   if (itemsCarousel.length === 0) {
     return <div>Carregando...</div>;
   }
 
   return (
-    <>
-       {isLoadingCarousel && <h6>Carregando...</h6>}
 
-      {errorCarousel && <h6>Ocorreu um erro: {JSON.stringify(errorCarousel)}</h6>}
+    <Container $imageUrl={itemsCarousel[currentIndex].backgroundImage}>
+      <Button onClick={goToPrevious}>&#10094;</Button>
 
-      {!isLoadingCarousel && !errorCarousel &&
-        <Container imageUrl={itemsCarousel[currentIndex].backgroundImage}>
-          <Button onClick={goToPrevious}>&#10094;</Button>
+      <Content>
+        <Title>{itemsCarousel[currentIndex].title}</Title>
+        <Subtitle>{itemsCarousel[currentIndex].subtitle}</Subtitle>
+        <BuyButton>Comprar Agora &#10095;</BuyButton>
+      </Content>
 
-          <Content>
-            <Title>{itemsCarousel[currentIndex].title}</Title>
-            <Subtitle>{itemsCarousel[currentIndex].subtitle}</Subtitle>
-            <BuyButton>Comprar Agora &#10095;</BuyButton>
-          </Content>
+      <Button onClick={goToNext}>&#10095;</Button>
+    </Container>
 
-          <Button onClick={goToNext}>&#10095;</Button>
-        </Container>
-      }
-    </>
+
   );
 }

@@ -29,14 +29,14 @@ export default function Products() {
   const { term } = useSearch();
   const { addItem } = useCart();
 
-   useEffect(() => {
+  useEffect(() => {
     if (term) {
       setFilteredProducts(
         products.filter(
           (product) =>
             product.name.toLowerCase().includes(term.toLowerCase()) ||
-            product.description.toLowerCase().includes(term.toLowerCase())
-        )
+            product.description.toLowerCase().includes(term.toLowerCase()),
+        ),
       );
     } else {
       setFilteredProducts([...products]);

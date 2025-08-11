@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_CONFIG } from '../../config/APIConfig';
- 
+
 export interface IProduct {
   id: string;
   name: string;
@@ -12,14 +12,14 @@ export interface IProduct {
     type: string;
   }>;
 }
- 
+
 export interface ICarouselItem {
   subtitle: string;
   title: string;
   description: string;
   backgroundImage: string;
 }
- 
+
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
@@ -40,11 +40,11 @@ export const apiSlice = createApi({
     getCarouselItems: builder.query<ICarouselItem[], void>({
       query: () => API_CONFIG.ENDPOINTS.CAROUSEL,
     }),
-  })
+  }),
 });
- 
+
 export const {
   useGetProductsQuery,
   useGetCarouselItemsQuery,
-  useGetProductByIdQuery
+  useGetProductByIdQuery,
 } = apiSlice;

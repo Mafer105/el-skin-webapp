@@ -1,9 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Carousel, { Slide } from './index';
-import { carouselService } from '../../service/carouselService';
+import { useGetCarouselItemsQuery } from '../../store/api/apiSlice';
 
-jest.mock('../../service/carouselService');
+jest.mock('../../store/api/apiSlice');
+
+const mockedUseGetCarouselItemsQuery = useGetCarouselItemsQuery as jest.Mock;
 
 const mockSlides: Slide[] = [
   {
@@ -30,22 +32,29 @@ const mockSlides: Slide[] = [
 ];
 
 describe('Componente Carousel', () => {
-  beforeEach(() => {
-    (carouselService.getCarouselItems as jest.Mock).mockResolvedValue(
-      mockSlides,
-    );
-  });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test('deve exibir a mensagem de "Carregando..." inicialmente', () => {
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: [], 
+      isLoading: true,
+      error: null,
+    });
+
     render(<Carousel />);
     expect(screen.getByText('Carregando...')).toBeInTheDocument();
   });
 
   test('deve renderizar o primeiro slide após o carregamento dos dados', async () => {
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: mockSlides,
+      isLoading: false,
+      error: null,
+    });
+
     render(<Carousel />);
 
     expect(await screen.findByText('Título do Slide 1')).toBeInTheDocument();
@@ -55,6 +64,12 @@ describe('Componente Carousel', () => {
   });
 
   test('deve navegar para o próximo slide ao clicar no botão >', async () => {
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: mockSlides,
+      isLoading: false,
+      error: null,
+    });
+
     render(<Carousel />);
 
     await screen.findByText('Título do Slide 1');
@@ -66,6 +81,12 @@ describe('Componente Carousel', () => {
   });
 
   test('deve navegar para o último slide ao clicar no botão < no primeiro slide', async () => {
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: mockSlides,
+      isLoading: false,
+      error: null,
+    });
+
     render(<Carousel />);
 
     await screen.findByText('Título do Slide 1');
@@ -77,9 +98,28 @@ describe('Componente Carousel', () => {
   });
 
   test('deve chamar carouselService.getCarouselItems uma vez', async () => {
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: mockSlides,
+      isLoading: false,
+      error: null,
+    });
+
     render(<Carousel />);
     await screen.findByText('Título do Slide 1');
 
-    expect(carouselService.getCarouselItems).toHaveBeenCalledTimes(1);
+    expect(useGetCarouselItemsQuery).toHaveBeenCalledTimes(1);
+  });
+
+  test('deve exibir uma mensagem de erro se a requisição falhar', () => {
+    const error = { message: 'Falha na requisição' };
+    mockedUseGetCarouselItemsQuery.mockReturnValue({
+      data: [],
+      isLoading: false,
+      error: error,
+    });
+
+    render(<Carousel />);
+    expect(screen.getByText(/Ocorreu um erro/i)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(error.message, 'i'))).toBeInTheDocument();
   });
 });
