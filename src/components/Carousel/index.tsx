@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { carouselService } from '../../service/carouselService';
+import { useState } from 'react';
+import { useGetCarouselItemsQuery } from '../../store/api/apiSlice';
 import styled from 'styled-components';
 export interface Slide {
   id: string;
@@ -64,43 +64,43 @@ const Subtitle = styled.p`
 
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slides, setSlides] = useState<Slide[]>([]);
-
-  useEffect(() => {
-    async function fetchItems() {
-      const newItems = await carouselService.getCarouselItems();
-      setSlides(newItems);
-    }
-    fetchItems();
-  }, []);
+  const { data: itemsCarousel = [], isLoading: isLoadingCarousel, error: errorCarousel } = useGetCarouselItemsQuery();
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    const newIndex = isFirstSlide ? itemsCarousel.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
 
   const goToNext = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
+    const isLastSlide = currentIndex === itemsCarousel.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
 
-  if (slides.length === 0) {
+  if (itemsCarousel.length === 0) {
     return <div>Carregando...</div>;
   }
 
   return (
-    <Container imageUrl={slides[currentIndex].backgroundImage}>
-      <Button onClick={goToPrevious}>&#10094;</Button>
+    <>
+       {isLoadingCarousel && <h6>Carregando...</h6>}
 
-      <Content>
-        <Title>{slides[currentIndex].title}</Title>
-        <Subtitle>{slides[currentIndex].subtitle}</Subtitle>
-        <BuyButton>Comprar Agora &#10095;</BuyButton>
-      </Content>
+      {errorCarousel && <h6>Ocorreu um erro: {JSON.stringify(errorCarousel)}</h6>}
 
-      <Button onClick={goToNext}>&#10095;</Button>
-    </Container>
+      {!isLoadingCarousel && !errorCarousel &&
+        <Container imageUrl={itemsCarousel[currentIndex].backgroundImage}>
+          <Button onClick={goToPrevious}>&#10094;</Button>
+
+          <Content>
+            <Title>{itemsCarousel[currentIndex].title}</Title>
+            <Subtitle>{itemsCarousel[currentIndex].subtitle}</Subtitle>
+            <BuyButton>Comprar Agora &#10095;</BuyButton>
+          </Content>
+
+          <Button onClick={goToNext}>&#10095;</Button>
+        </Container>
+      }
+    </>
   );
 }

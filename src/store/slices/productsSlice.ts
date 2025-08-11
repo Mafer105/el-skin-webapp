@@ -34,10 +34,8 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    carregarProdutos: (state) => {
-      productService.getProducts().then((products) => {
-        state.items = products;
-      });
+    clearError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -58,5 +56,5 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { carregarProdutos } = productsSlice.actions;
+export const { clearError } = productsSlice.actions;
 export default productsSlice.reducer;

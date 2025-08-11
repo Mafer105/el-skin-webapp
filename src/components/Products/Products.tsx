@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
-import { productService } from '../../service/productService';
 import { useCart } from '../../hooks/useCart';
 import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
-import { useProducts } from '../../hooks/useProducts';
+import { useGetProductsQuery } from '../../store/api/apiSlice';
 
 const Container = styled.section`
   width: 80%;
@@ -24,25 +23,20 @@ const Grid = styled.section`
 `;
 
 export default function Products() {
-  const { products, loadProducts } = useProducts();
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
+  const { data: products = [], isLoading, error } = useGetProductsQuery();
 
   const { term } = useSearch();
   const { addItem } = useCart();
 
-  useEffect(() => {
-    if (products.length === 0) {
-      loadProducts();
-    }
-  }, [products.length, loadProducts]);
-  useEffect(() => {
+   useEffect(() => {
     if (term) {
       setFilteredProducts(
         products.filter(
-          (product: { name: string; description: string }) =>
+          (product) =>
             product.name.toLowerCase().includes(term.toLowerCase()) ||
-            product.description.toLowerCase().includes(term.toLowerCase()),
-        ),
+            product.description.toLowerCase().includes(term.toLowerCase())
+        )
       );
     } else {
       setFilteredProducts([...products]);
@@ -66,17 +60,24 @@ export default function Products() {
 
   return (
     <Container>
-      <Title>nossos queridinhos estão aqui</Title>
-      <Grid>
-        {filteredProducts.map((product) => (
-          <Product
-            key={product.id}
-            product={product}
-            onProductClick={handleProductClick}
-            onBuyClick={handleBuyClick}
-          />
-        ))}
-      </Grid>
+      {isLoading && <p>Carregando produtos...</p>}
+      {error && <p>Erro ao carregar produtos: {JSON.stringify(error)}</p>}
+
+      {!isLoading && !error && (
+        <>
+          <Title>nossos queridinhos estão aqui</Title>
+          <Grid>
+            {filteredProducts.map((product) => (
+              <Product
+                key={product.id}
+                product={product}
+                onProductClick={handleProductClick}
+                onBuyClick={handleBuyClick}
+              />
+            ))}
+          </Grid>
+        </>
+      )}
     </Container>
   );
 }
