@@ -1,0 +1,75 @@
+.container {
+  margin: 0 180px;
+}
+
+.title {
+  margin-top: 50px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sectionContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -30px;
+}
+
+
+.subtitle {
+  width: 200px;
+  text-align: left;
+  font-weight: 400;
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+
+.text {
+  width: 750px;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.helpTitle {
+  margin-top: 60px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.contactButton {
+  width: 290px;
+  height: 80px;
+  background-color: var(--color-primary-dark, #94426e); 
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-white, #fff);
+  cursor: pointer;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: var(--transition-normal, all 0.3s ease);
+}
+
+.contactButton:hover {
+    filter: brightness(1.1);
+}
+
+.firstImage {
+  margin-top: 30px;
+}
+
+.secondImage {
+  width: 570px;
+  height: 850px;
+  object-fit: cover; 
+  margin-top: -50px;
+}
+
+.bottomBanner {
+  width: 100%;
+  margin-top: 20px;
+  height: 1000px;
+}

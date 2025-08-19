@@ -1,6 +1,6 @@
-import Icons from './Icons';
+import SocialIcons from './Icons'; 
 import Column from './Column';
-import styled from 'styled-components';
+import styles from './Footer.module.css'; 
 
 const footerData = [
   {
@@ -25,46 +25,11 @@ const footerData = [
   },
 ];
 
-const FooterComponent = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #f9f9f9;
-`;
-
-const Text = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  max-width: 1000px;
-  text-align: left;
-  h2 {
-    font-size: 16px;
-    border-bottom: 1px solid #000;
-    font-weight: 600;
-  }
-  p {
-    font-size: 0.9rem;
-    cursor: pointer;
-    color: #878787;
-  }
-`;
-
-const DivIcons = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-`;
-
 export default function Footer() {
   return (
-    <FooterComponent>
-      <DivIcons>
-        <Icons />
-      </DivIcons>
-      <Text>
+    <section className={styles.footerContainer}>
+      <SocialIcons />
+      <div className={styles.textContainer}>
         {footerData.map((column) => (
           <Column
             key={column.title}
@@ -73,7 +38,7 @@ export default function Footer() {
             path={column.path}
           />
         ))}
-      </Text>
-    </FooterComponent>
+      </div>
+    </section>
   );
 }

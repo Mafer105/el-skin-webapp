@@ -1,32 +1,8 @@
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 60px;
-  padding-right: 100px;
-  margin-left: 100px;
-  margin-right: 100px;
-  height: 50px;
-
-  ul {
-    display: flex;
-    gap: 90px;
-  }
-
-  li {
-    list-style-type: none;
-  }
-`;
-
-const Promocao = styled.p`
-  color: #dc5e5e;
-`;
+import styles from './Menu.module.css';
 
 export default function Menu() {
   return (
-    <Container>
+    <nav className={styles.container}>
       <ul>
         <li>
           <p>Categorias</p>
@@ -41,9 +17,9 @@ export default function Menu() {
           <p>Ingredientes</p>
         </li>
       </ul>
-      <Promocao>
+      <p className={styles.promocao}>
         <strong>Kits até 50% off</strong>
-      </Promocao>
-    </Container>
+      </p>
+    </nav>
   );
 }

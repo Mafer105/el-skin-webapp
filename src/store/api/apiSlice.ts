@@ -31,12 +31,6 @@ export const apiSlice = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getProducts: builder.query<IProduct[], void>({
-      query: () => API_CONFIG.ENDPOINTS.PRODUCTS,
-    }),
-    getProductById: builder.query<IProduct, string>({
-      query: (id) => `${API_CONFIG.ENDPOINTS.PRODUCTS}/${id}`,
-    }),
     getCarouselItems: builder.query<ICarouselItem[], void>({
       query: () => API_CONFIG.ENDPOINTS.CAROUSEL,
     }),
@@ -44,7 +38,5 @@ export const apiSlice = createApi({
 });
 
 export const {
-  useGetProductsQuery,
   useGetCarouselItemsQuery,
-  useGetProductByIdQuery,
 } = apiSlice;

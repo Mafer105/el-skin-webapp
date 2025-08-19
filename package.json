@@ -19,7 +19,6 @@
     "react-icons": "^4.12.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.30.1",
-    "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "styled-components": "^6.1.19",
     "typescript": "^4.9.5",
@@ -31,7 +30,6 @@
     "start": "npx serve@latest ./build",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "eslintConfig": {

@@ -1,47 +1,12 @@
+'use client'; 
+
 import Input from '../Input';
 import { IoBagHandleOutline } from 'react-icons/io5';
 import Menu from '../Menu';
 import { useState } from 'react';
 import CartModal from '../CartModal';
-import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 100px;
-  padding-right: 100px;
-  margin-left: 100px;
-  margin-right: 100px;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const CartButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
-
-const DivFather = styled.div`
-  border-bottom: '1px solid #ccc';
-`;
+import styles from './Header.module.css'; 
 
 export default function Header() {
   const { term, setTerm } = useSearch();
@@ -64,23 +29,27 @@ export default function Header() {
   }
 
   return (
-    <DivFather>
-      <Container>
+    <div className={styles.headerWrapper}>
+      <div className={styles.headerContainer}>
         <h1>AL SKIN</h1>
         <Input
           value={term}
           onChange={handleOnChange}
           onSearchClick={onClickSearch}
-          aria-label="Campo de  busca de produtos"
+          aria-label="Campo de busca de produtos"
         />
-        <Actions>
-          <CartButton onClick={handleOnClickCart} aria-label="Abrir carrinho">
+        <div className={styles.actions}>
+          <button
+            onClick={handleOnClickCart}
+            aria-label="Abrir carrinho"
+            className={styles.cartButton}
+          >
             <IoBagHandleOutline size={24} />
-          </CartButton>
-        </Actions>
-      </Container>
+          </button>
+        </div>
+      </div>
       <Menu />
       <CartModal isOpen={isCartModalOpen} onClose={handleCloseCart} />
-    </DivFather>
+    </div>
   );
 }

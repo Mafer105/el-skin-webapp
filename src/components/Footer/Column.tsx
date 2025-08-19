@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 interface FooterColumnProps {
   title: string;
   links: string[];
@@ -13,7 +13,7 @@ export default function FooterColumn({
   return (
     <div>
       {path ? (
-        <Link to={path} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link href={path} style={{ textDecoration: 'none', color: 'inherit' }}>
           <h2>{title}</h2>
         </Link>
       ) : (

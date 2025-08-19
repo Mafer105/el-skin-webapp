@@ -1,0 +1,79 @@
+.container {
+  width: 240px;
+  height: 400px;
+  margin-bottom: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.productImage {
+  width: 240px;
+  height: 240px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 20px;
+  margin: 12px 0 4px;
+  font-weight: bold;
+}
+
+.description {
+  width: 220px;
+  font-size: 16px;
+  color: #878787;
+  margin: 0;
+  flex-grow: 1; 
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  margin-top: 12px;
+}
+
+.tag {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.protection {
+  background-color: var(--tag-protection-bg, #e3f2fd);
+  color: var(--tag-protection-text, #1976d2);
+}
+
+.face {
+  background-color: var(--tag-face-bg, #fce4ec);
+  color: var(--tag-face-text, #c2185b);
+}
+
+.price {
+  font-size: 20px;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.buyButton {
+  background-color: var(--color-primary-light, #7045f5); 
+  height: 40px;
+  width: 132px;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.buyButton:hover {
+    background-color: var(--color-primary, #8B4A8B);
+}

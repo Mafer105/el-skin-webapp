@@ -1,47 +1,52 @@
-import axios from 'axios';
 import { API_CONFIG } from '../config/APIConfig';
+import { IProduct } from '../components/Product'; 
+import { Slide } from '../components/Carousel'; 
 
-const api = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
-  timeout: API_CONFIG.TIMEOUT,
-  headers: API_CONFIG.DEFAULT_HEADERS,
-});
+export async function getProducts(): Promise<IProduct[]> {
+  try {
+    const res = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.PRODUCTS}`, {
+      next: { revalidate: 60 },
+    });
 
-api.interceptors.request.use(
-  (config) => {
-    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`);
-    return config;
-  },
-  (error) => {
-    console.error('[API] Erro na requisição:', error);
-    return Promise.reject(new Error(error.message || 'Erro na requisição'));
-  },
-);
-
-api.interceptors.response.use(
-  (response) => {
-    console.log(`[API] Resposta recebida: ${response.status}`);
-    return response;
-  },
-  (error) => {
-    console.error(
-      '[API] Erro na resposta:',
-      error.response?.status,
-      error.message,
-    );
-
-    if (error.response?.status === 401) {
-      console.error('Erro de autenticação');
-    } else if (error.response?.status === 500) {
-      console.error('Erro interno do servidor');
-    } else {
-      console.error('Erro desconhecido:', error.message);
+    if (!res.ok) {
+      throw new Error('Falha ao buscar produtos');
     }
 
-    return Promise.reject(
-      new Error(error.message || 'Erro na resposta da API'),
-    );
-  },
-);
+    return res.json();
+  } catch (error) {
+    console.error('[API_ERROR] getProducts:', error);
+    return []; 
+  }
+}
 
-export default api;
+export async function getProductById(id: string): Promise<IProduct | null> {
+  try {
+    const res = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.PRODUCTS}/${id}`);
+
+    if (!res.ok) {
+      throw new Error(`Falha ao buscar o produto com id: ${id}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('[API_ERROR] getProductById:', error);
+    return null;
+  }
+}
+
+export async function getCarouselItems(): Promise<Slide[]> {
+  try {
+    const res = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CAROUSEL}`, {
+      next: { revalidate: 3600 }, 
+    });
+
+    if (!res.ok) {
+      throw new Error('Falha ao buscar itens do carrossel');
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('[API_ERROR] getCarouselItems:', error);
+    return [];
+  }
+}

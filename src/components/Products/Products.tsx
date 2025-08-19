@@ -1,30 +1,19 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import Product, { IProduct } from '../Product';
 import { useCart } from '../../hooks/useCart';
-import styled from 'styled-components';
 import { useSearch } from '../../hooks/useSearch';
-import { useGetProductsQuery } from '../../store/api/apiSlice';
+import styles from './Products.module.css';
 
-const Container = styled.section`
-  width: 80%;
-  margin: 0 auto;
-`;
-const Title = styled.h3`
-  text-align: center;
-  margin-top: 60px;
-  margin-bottom: 60px;
-`;
+interface ProductsProps {
+  initialData: IProduct[];
+}
 
-const Grid = styled.section`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 100px;
-  justify-self: center;
-`;
-
-export default function Products() {
-  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
-  const { data: products = [], isLoading, error } = useGetProductsQuery();
+export default function Products({ initialData }: Readonly<ProductsProps>) {
+  const products = initialData;
+  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>(products);
+  
 
   const { term } = useSearch();
   const { addItem } = useCart();
@@ -41,17 +30,11 @@ export default function Products() {
     } else {
       setFilteredProducts([...products]);
     }
-  }, [term, products]);
-
-  const handleProductClick = (productId: string) => {
-    console.log(`Produto clicado: ${productId}`);
-  };
+  }, [term, products]); 
 
   const handleBuyClick = (productId: string, event: React.MouseEvent) => {
     event.stopPropagation();
-    const productToAdd = products.find(
-      (p: { id: string }) => p.id === productId,
-    );
+    const productToAdd = products.find((p) => p.id === productId);
     if (productToAdd) {
       addItem(productToAdd);
       alert(`${productToAdd.name} foi adicionado ao carrinho!`);
@@ -59,25 +42,17 @@ export default function Products() {
   };
 
   return (
-    <Container>
-      {isLoading && <p>Carregando produtos...</p>}
-      {error && <p>Erro ao carregar produtos: {JSON.stringify(error)}</p>}
-
-      {!isLoading && !error && (
-        <>
-          <Title>nossos queridinhos estão aqui</Title>
-          <Grid>
-            {filteredProducts.map((product) => (
-              <Product
-                key={product.id}
-                product={product}
-                onProductClick={handleProductClick}
-                onBuyClick={handleBuyClick}
-              />
-            ))}
-          </Grid>
-        </>
-      )}
-    </Container>
+    <section className={styles.container}>
+      <h3 className={styles.title}>nossos queridinhos estão aqui</h3>
+      <section className={styles.grid}>
+        {filteredProducts.map((product) => (
+          <Product
+            key={product.id}
+            product={product}
+            onBuyClick={handleBuyClick}
+          />
+        ))}
+      </section>
+    </section>
   );
 }
